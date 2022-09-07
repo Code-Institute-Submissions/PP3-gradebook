@@ -16,9 +16,34 @@ wks_class_ave = SHEET.worksheet("target_averages")
 wks_adjusted = SHEET.worksheet("grades_adjusted_and_final")
 wks_advising = SHEET.worksheet("final_result_needed")
 
-def main():
-    print("The program is starting")
+def get_grades():
+    """
+    Tells the user for which assignment they are entering grades,
+    and requests the grades by user.
+    """
+    #Get the first assignment for which grades need to be entered
+    start_col = wks_raw_data.col_values(1)
+    index = start_col.index("due")
+    assignment = wks_raw_data.cell(index + 1, 2).value
 
+    #Get grades from user. User enters total points and 
+    #a percentage is calculated.
+    grades = []
+    student_list = wks_raw_data.row_values(1)
+    print(f"Accepting grades for {assignment}")
+    points_possible = int(input("What were the total possible points?\n"))
+    for student in student_list[2:]:
+        student_points = int(input(f"Enter points achieved for {student}\n"))
+        result = find_percent(student_points, points_possible)
+        print(f"This is a {result}% for {student}")
+        grades.append(result)
+    return grades
+
+def main():
+    """
+    Runs all program functions
+    """
+    get_grades()
 
 instructions = ("""You will be prompted to enter grades for each student for
 the next homework or exam due.\n
