@@ -57,9 +57,19 @@ def get_grades():
         grades.append(result)
     return grades
 
-def main():
-    new_grades = get_grades()
+def check_if_due():
+    start_col = [item for item in wks_raw_data.col_values(1) if item]
+    while True: 
+        try:
+            index = start_col.index("due")
+            get_grades()
+            break
+        except ValueError:
+            print("All grades have been entered.")
+            break
 
+def main():
+    check_if_due()
 # instructions = ("""You will be prompted to enter grades for each student for
 # the next homework or exam due.\n
 # After each grade, please confirm if the grade you entered is correct.
