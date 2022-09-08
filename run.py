@@ -53,6 +53,13 @@ def get_grades():
     # a percentage is calculated.
     grades = []
     student_list = wks_raw_data.row_values(1)
+    row_length = len(student_list)
+    row_number = index + 1
+    row_values = wks_raw_data.row_values(row_number)
+    grades = row_values
+    print(f"target row: {row_number}")
+    print(f"row length is: {row_length}")
+    print(f"The values already in the target row are {grades}")
     print(f"Accepting grades for {assignment}")
     points_possible = "What were the total possible points?\n"
     num1 = check_int(points_possible)
@@ -66,8 +73,9 @@ def get_grades():
         result = find_percent(num2, num1)
         print(f"This is a {result}% for {student}")
         grades.append(result)
-    return grades
-
+    for index in range(len(grades)):
+        grade = grades[index]
+        wks_raw_data.update_cell(row_number, index + 1, grade)
 
 def check_if_due():
     start_col = [item for item in wks_raw_data.col_values(1) if item]
