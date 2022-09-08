@@ -25,13 +25,21 @@ def find_percent(num1, num2):
 
 def end_program():
     print("end")
+
+def check_int(points):
+
+	while True:
+            try:
+                points = float(points)
+                return points
+            except ValueError:
+                print("Please enter a valid number.")
+
 def get_grades():
     """
     Tells the user for which assignment they are entering grades,
     and requests the grades by user.
     """
-    check_if_due()
-
     #Get the first assignment for which grades need to be entered
     start_col = [item for item in wks_raw_data.col_values(1) if item]
     index = start_col.index("due")
@@ -43,19 +51,12 @@ def get_grades():
     grades = []
     student_list = wks_raw_data.row_values(1)
     print(f"Accepting grades for {assignment}")
-    while True:
-        try:
-            points_possible = float(input("What were the total possible points?\n"))
-            break
-        except ValueError:
-            print("Please enter a valid number.")
+    points_possible = float(input("What were the total possible points?\n"))
+    check_int(points_possible)
+
     for student in student_list[2:]:
-        while True:
-            try:
-                student_points = float(input(f"Enter points achieved for {student}\n"))
-                break
-            except ValueError:
-                print("Please enter a valid number.")
+        student_points = float(input(f"Enter points achieved for {student}\n"))
+        check_int(student_points)
         while student_points > points_possible:
             student_points = float(input("The student score is greater than " +
                             "possible points, please re-enter"))
@@ -69,7 +70,7 @@ def check_if_due():
     while True: 
         try:
             index = start_col.index("due")
-            end_program()()
+            get_grades()
             break
         except ValueError:
             print("All grades have already been entered.")
@@ -77,6 +78,7 @@ def check_if_due():
     
 
 def main():
+    check_if_due()
     end_program()
 
 # instructions = ("""You will be prompted to enter grades for each student for
