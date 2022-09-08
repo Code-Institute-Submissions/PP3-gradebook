@@ -37,6 +37,14 @@ def check_int(points):
             except ValueError:
                 print("Please enter a valid number.")
 
+def check_answer(answer):
+    while True:
+            try:
+                answer.lower == "yes" or "no"
+                break
+            except ValueError:
+                print("Please enter 'yes' or 'no' only")
+
 
 def get_grades():
     """
@@ -57,21 +65,23 @@ def get_grades():
     row_number = index + 1
     row_values = wks_raw_data.row_values(row_number)
     grades = row_values
-    print(f"target row: {row_number}")
-    print(f"row length is: {row_length}")
-    print(f"The values already in the target row are {grades}")
     print(f"Accepting grades for {assignment}")
     points_possible = "What were the total possible points?\n"
     num1 = check_int(points_possible)
-
-    for student in student_list[2:]:
-        student_points = "Enter points achieved for " + student + "\n"
-        num2 = check_int(student_points)
-        while num2 > num1:
-            num2 = float(input("The student score is greater than" +
+    for student in student_list[2:]:        
+        confirm = "no"                
+        while confirm == "no":
+            student_points = "Enter points achieved for " + student + "\n"
+            num2 = check_int(student_points)
+            while num2 > num1:
+                num2 = float(input("The student score is greater than" +
                             " possible points, please re-enter\n"))
+            confirm = input(f"You entered {num2}, is this correct?\n")                
+            check_answer(confirm)
+        
         result = find_percent(num2, num1)
-        print(f"This is a {result}% for {student}")
+        
+        print(f"{num2}/{num1} is {result}%")
         grades.append(result)
     for index in range(len(grades)):
         grade = grades[index]
