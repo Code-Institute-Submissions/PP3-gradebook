@@ -32,7 +32,7 @@ def check_int(points):
 
     while True:
             try:
-                points = float(points)
+                points = float(input(points))
                 return points
             except ValueError:
                 print("Please enter a valid number.")
@@ -54,16 +54,16 @@ def get_grades():
     grades = []
     student_list = wks_raw_data.row_values(1)
     print(f"Accepting grades for {assignment}")
-    points_possible = float(input("What were the total possible points?\n"))
-    check_int(points_possible)
+    points_possible = "What were the total possible points?\n"
+    num1 = check_int(points_possible)
 
     for student in student_list[2:]:
-        student_points = float(input(f"Enter points achieved for {student}\n"))
-        check_int(student_points)
-        while student_points > points_possible:
-            student_points = float(input("The student score is greater than " +
-            "possible points, please re-enter"))
-        result = find_percent(student_points, points_possible)
+        student_points = "Enter points achieved for " + student + "\n"
+        num2 = check_int(student_points)
+        while num2 > num1:
+            num2 = float(input("The student score is greater than" +
+                            " possible points, please re-enter\n"))
+        result = find_percent(num2, num1)
         print(f"This is a {result}% for {student}")
         grades.append(result)
     return grades
