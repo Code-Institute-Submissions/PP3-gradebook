@@ -17,6 +17,7 @@ wks_class_ave = SHEET.worksheet("target_averages")
 wks_adjusted = SHEET.worksheet("grades_adjusted_and_final")
 wks_advising = SHEET.worksheet("final_result_needed")
 
+
 def find_percent(num1, num2):
 
     result = (num1/num2)*100
@@ -26,28 +27,30 @@ def find_percent(num1, num2):
 def end_program():
     print("end")
 
+
 def check_int(points):
 
-	while True:
+    while True:
             try:
                 points = float(points)
                 return points
             except ValueError:
                 print("Please enter a valid number.")
 
+
 def get_grades():
     """
     Tells the user for which assignment they are entering grades,
     and requests the grades by user.
     """
-    #Get the first assignment for which grades need to be entered
+    # Get the first assignment for which grades need to be entered
     start_col = [item for item in wks_raw_data.col_values(1) if item]
     index = start_col.index("due")
     assignment = wks_raw_data.cell(index + 1, 2).value
     wks_raw_data.update_cell(index+1, 1, "=TODAY()")
 
-    #Get grades from user. User enters total points and 
-    #a percentage is calculated.
+    # Get grades from user. User enters total points and
+    # a percentage is calculated.
     grades = []
     student_list = wks_raw_data.row_values(1)
     print(f"Accepting grades for {assignment}")
@@ -59,15 +62,16 @@ def get_grades():
         check_int(student_points)
         while student_points > points_possible:
             student_points = float(input("The student score is greater than " +
-                            "possible points, please re-enter"))
+            "possible points, please re-enter"))
         result = find_percent(student_points, points_possible)
         print(f"This is a {result}% for {student}")
         grades.append(result)
     return grades
 
+
 def check_if_due():
     start_col = [item for item in wks_raw_data.col_values(1) if item]
-    while True: 
+    while True:
         try:
             index = start_col.index("due")
             get_grades()
@@ -75,7 +79,7 @@ def check_if_due():
         except ValueError:
             print("All grades have already been entered.")
             break
-    
+
 
 def main():
     check_if_due()
@@ -85,11 +89,11 @@ def main():
 # the next homework or exam due.\n
 # After each grade, please confirm if the grade you entered is correct.
 # If you enter an incorrect grade, you will have the chance to enter it again.
-# After all the grades are entered, you will be given the class average, and 
+# After all the grades are entered, you will be given the class average, and
 # and you will be asked if you would like to add a curve to the results.\n
-# The orinal scores and adjusted grades will be added to the spreadsheet on 
-# separate sheets. Students scores will be averaged, with and calculations will be
-# made for what the student needs to gain a pass, reach the class average
+# The orinal scores and adjusted grades will be added to the spreadsheet on
+# separate sheets. Students scores will be averaged, with and calculations will
+# be made for what the student needs to gain a pass, reach the class average
 # or acheive an A.""")
 # print(instructions)
 main()
