@@ -30,6 +30,8 @@ def get_grades():
     Tells the user for which assignment they are entering grades,
     and requests the grades by user.
     """
+    check_if_due()
+
     #Get the first assignment for which grades need to be entered
     start_col = [item for item in wks_raw_data.col_values(1) if item]
     index = start_col.index("due")
@@ -67,7 +69,7 @@ def check_if_due():
     while True: 
         try:
             index = start_col.index("due")
-            get_grades()
+            end_program()()
             break
         except ValueError:
             print("All grades have already been entered.")
@@ -75,7 +77,6 @@ def check_if_due():
     
 
 def main():
-    check_if_due()
     end_program()
 
 # instructions = ("""You will be prompted to enter grades for each student for
