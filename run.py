@@ -1,5 +1,5 @@
 import gspread
-import datetime
+import pandas as pd
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -39,9 +39,19 @@ def get_grades():
     grades = []
     student_list = wks_raw_data.row_values(1)
     print(f"Accepting grades for {assignment}")
-    points_possible = int(input("What were the total possible points?\n"))
+    while True:
+        try:
+            points_possible = float(input("What were the total possible points?\n"))
+            break
+        except ValueError:
+            print("Please enter a valid number.")
     for student in student_list[2:]:
-        student_points = int(input(f"Enter points achieved for {student}\n"))
+        while True:
+            try:
+                student_points = float(input(f"Enter points achieved for {student}\n"))
+                break
+            except ValueError:
+                print("Please enter a valid number.")
         result = find_percent(student_points, points_possible)
         print(f"This is a {result}% for {student}")
         grades.append(result)
