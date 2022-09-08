@@ -23,13 +23,15 @@ def find_percent(num1, num2):
     return round(result)
 
 
+def end_program():
+    print("end")
 def get_grades():
     """
     Tells the user for which assignment they are entering grades,
     and requests the grades by user.
     """
     #Get the first assignment for which grades need to be entered
-    start_col = wks_raw_data.col_values(1)
+    start_col = [item for item in wks_raw_data.col_values(1) if item]
     index = start_col.index("due")
     assignment = wks_raw_data.cell(index + 1, 2).value
     wks_raw_data.update_cell(index+1, 1, "=TODAY()")
@@ -52,6 +54,9 @@ def get_grades():
                 break
             except ValueError:
                 print("Please enter a valid number.")
+        while student_points > points_possible:
+            student_points = float(input("The student score is greater than " +
+                            "possible points, please re-enter"))
         result = find_percent(student_points, points_possible)
         print(f"This is a {result}% for {student}")
         grades.append(result)
@@ -65,11 +70,14 @@ def check_if_due():
             get_grades()
             break
         except ValueError:
-            print("All grades have been entered.")
+            print("All grades have already been entered.")
             break
+    
 
 def main():
     check_if_due()
+    end_program()
+
 # instructions = ("""You will be prompted to enter grades for each student for
 # the next homework or exam due.\n
 # After each grade, please confirm if the grade you entered is correct.
