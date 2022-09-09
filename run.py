@@ -17,6 +17,7 @@ wks_class_ave = SHEET.worksheet("target_averages")
 wks_adjusted = SHEET.worksheet("grades_adjusted_and_final")
 wks_advising = SHEET.worksheet("final_result_needed")
 
+df = pd.DataFrame(wks_raw_data.get_all_records())
 
 def find_percent(num1, num2):
 
@@ -39,12 +40,10 @@ def check_int(points):
 
 
 def check_answer(answer):
-    while True:
-        try:
-            answer.lower == "yes" or "no"
-            break
-        except ValueError:
-            print("Please enter 'yes' or 'no' only")
+    answer = answer.lower()
+    while answer not in ("yes", "y", "no", "n"):
+        answer = input("Please answer yes or no.")
+    return answer
 
 
 def get_grades():
@@ -67,18 +66,25 @@ def get_grades():
     row_values = wks_raw_data.row_values(row_number)
     grades = row_values
     print(f"Accepting grades for {assignment}\n")
-    points_possible = "What were the total possible points?\n"
+    points_possible = "\nWhat were the total possible points?\n"
     num1 = check_int(points_possible)
     for student in student_list[2:]:
-        confirm = "no"
-        while confirm == "no":
+        confirm = ""
+        while confirm == "":
             student_points = "Enter points achieved for " + student + "\n"
             num2 = check_int(student_points)
             while num2 > num1:
                 num2 = float(input("""The student score is greater than 
                 possible points, please re-enter\n"""))
-            confirm = input(f"You entered {num2}, is this correct?\n")
-            check_answer(confirm)
+            user_validation = input(f"You entered {num2}, is this correct?\n")
+            confirm = check_answer(user_validation)
+            if confirm in ("no", "n"):
+                confirm = ""
+            elif confirm in ("yes", "y"):
+                confirm = user_validation
+                continue
+            else:
+                confirm = ""
         result = find_percent(num2, num1)
         print(f"{num2}/{num1} is {result}%")
         grades.append(result)
@@ -100,6 +106,7 @@ def check_if_due():
 
 
 def main():
+    print(f"Here are the current student grades for your class:\n {df}\n")
     check_if_due()
     end_program()
 
