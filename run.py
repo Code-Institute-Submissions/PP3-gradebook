@@ -26,17 +26,15 @@ def find_percent(num1, num2):
     return round(result)
 
 
-def end_program():
+def start_program():
     answer = ""
     while answer == "":
-        answer = input("Would you like to enter more results?\n")
+        answer = input("\nWould you like to enter results?\n")
         answer = answer.lower()
         if answer in ("yes", "y"):
-            get_grades()
+            check_if_due()
         if answer in ("no", "n"):
-            print(f"""Thank you for your update. Here are the 
-            results:\n""")
-            print(df)
+            end_program()
 
 
 def check_int(points):
@@ -75,7 +73,7 @@ def get_grades():
     row_number = index + 1
     row_values = wks_raw_data.row_values(row_number)
     grades = row_values
-    print(f"Accepting grades for {assignment}\n")
+    print(f"\nAccepting grades for {assignment}\n")
     points_possible = "\nWhat were the total possible points?\n"
     num1 = check_int(points_possible)
     for student in student_list[2:]:
@@ -101,24 +99,31 @@ def get_grades():
     for index in range(len(grades)):
         grade = grades[index]
         wks_raw_data.update_cell(row_number, index + 1, grade)
+    main()
 
 
 def check_if_due():
+    """
+    Determines if any more grade need to be entered 
+    """
     start_col = [item for item in wks_raw_data.col_values(1) if item]
     while True:
         try:
             index = start_col.index("due")
+            get_grades()
             break
         except ValueError:
-            print("All grades have already been entered.")
+            print("All grades for this course have been entered.")
             break
 
+def end_program():
+    print("Thank you for using the app.")
 
 def main():
-    print(f"Here are the current student grades for your class:\n {df}\n")
-    check_if_due()
-    get_grades()
-    end_program()
+    print("""Here are the most current grades for your class\n""")
+    print(df)
+    start_program()
+    
 
 instructions = ("""You will be prompted to enter grades for each student for
  the next homework or exam due.\n
