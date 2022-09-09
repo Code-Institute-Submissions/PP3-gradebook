@@ -19,6 +19,7 @@ wks_advising = SHEET.worksheet("final_result_needed")
 
 df = pd.DataFrame(wks_raw_data.get_all_records())
 
+
 def find_percent(num1, num2):
 
     result = (num1/num2)*100
@@ -26,7 +27,16 @@ def find_percent(num1, num2):
 
 
 def end_program():
-    print("end")
+    answer = ""
+    while answer == "":
+        answer = input("Would you like to enter more results?\n")
+        answer = answer.lower()
+        if answer in ("yes", "y"):
+            get_grades()
+        if answer in ("no", "n"):
+            print(f"""Thank you for your update. Here are the 
+            results:\n""")
+            print(df)
 
 
 def check_int(points):
@@ -74,7 +84,7 @@ def get_grades():
             student_points = "Enter points achieved for " + student + "\n"
             num2 = check_int(student_points)
             while num2 > num1:
-                num2 = float(input("""The student score is greater than 
+                num2 = float(input("""The student score is greater than
                 possible points, please re-enter\n"""))
             user_validation = input(f"You entered {num2}, is this correct?\n")
             confirm = check_answer(user_validation)
@@ -98,7 +108,6 @@ def check_if_due():
     while True:
         try:
             index = start_col.index("due")
-            get_grades()
             break
         except ValueError:
             print("All grades have already been entered.")
@@ -108,6 +117,7 @@ def check_if_due():
 def main():
     print(f"Here are the current student grades for your class:\n {df}\n")
     check_if_due()
+    get_grades()
     end_program()
 
 instructions = ("""You will be prompted to enter grades for each student for
