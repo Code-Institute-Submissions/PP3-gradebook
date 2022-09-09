@@ -1,3 +1,4 @@
+import statistics
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
@@ -18,7 +19,6 @@ wks_adjusted = SHEET.worksheet("grades_adjusted_and_final")
 wks_advising = SHEET.worksheet("final_result_needed")
 
 df = pd.DataFrame(wks_raw_data.get_all_records())
-
 
 def find_percent(num1, num2):
 
@@ -58,8 +58,9 @@ def check_answer(answer):
 
 def get_grades():
     """
-    Tells the user for which assignment they are entering grades,
-    and requests the grades by user.
+    Requests total score value of test or assignment, the
+    student scores, then inserts the calculated percent 
+    into a Google Sheet with the class average.
     """
     # Get the first assignment for which grades need to be entered
     start_col = [item for item in wks_raw_data.col_values(1) if item]
@@ -98,10 +99,14 @@ def get_grades():
         result = find_percent(num2, num1)
         print(f"{num2}/{num1} is {result}%")
         grades.append(result)
+    grades_only = grades[2:]
     for index in range(len(grades)):
         grade = grades[index]
         wks_raw_data.update_cell(row_number, index + 1, grade)
-
+    class_ave = int(statistics.mean(grades_only))
+    print(f"The class average for {assignment} was {class_ave}\n")
+    wks_raw_data.update_cell(row_number, 13, class_ave)
+    
 
 def check_if_due():
     start_col = [item for item in wks_raw_data.col_values(1) if item]
@@ -116,6 +121,9 @@ def check_if_due():
 
 
 def main():
+    """
+    Run's the programs main functions
+    """
     print(f"Here are the current student grades for your class:\n {df}\n")
     check_if_due()
     end_program()
