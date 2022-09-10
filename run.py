@@ -52,7 +52,7 @@ def check_int(points):
 def check_answer(answer):
     answer = answer.lower()
     while answer not in ("yes", "y", "no", "n"):
-        answer = input("Please answer yes or no.")
+        answer = input("Please answer yes or no.\n")
     return answer
 
 
