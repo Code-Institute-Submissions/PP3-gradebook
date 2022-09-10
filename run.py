@@ -88,12 +88,12 @@ def get_grades():
                 student_points = """The student score must not exceed total possible score.
                 Please re-enter student score:\n"""
                 num2 = check_int(student_points)
-            user_validation = input(f"You entered {num2}, is this correct?\n")
-            confirm = check_answer(user_validation)
+            sscore_validation = input(f"You entered {num2}, is this correct?\n")
+            confirm = check_answer(sscore_validation)
             if confirm in ("no", "n"):
                 confirm = ""
             elif confirm in ("yes", "y"):
-                confirm = user_validation
+                confirm = sscore_validation
             else:
                 confirm = ""
         result = find_percent(num2, num1)
