@@ -85,15 +85,15 @@ def get_grades():
             student_points = "Enter points achieved for " + student + "\n"
             num2 = check_int(student_points)
             while num2 > num1:
-                num2 = float(input("""The student score is greater than
-                possible points, please re-enter\n"""))
+                student_points = """The student score must note exceed total score possible.
+                Please re-enter student score:\n"""
+                num2 = check_int(student_points)
             user_validation = input(f"You entered {num2}, is this correct?\n")
             confirm = check_answer(user_validation)
             if confirm in ("no", "n"):
                 confirm = ""
             elif confirm in ("yes", "y"):
                 confirm = user_validation
-                continue
             else:
                 confirm = ""
         result = find_percent(num2, num1)
