@@ -55,6 +55,21 @@ def check_answer(answer):
         answer = input("Please answer yes or no.\n")
     return answer
 
+def get_num1():
+    confirm_points = ""
+    while confirm_points == "":
+        points_possible = "\nWhat was the total possible score?\n"
+        num1 = check_int(points_possible)
+        points_validation = input(f"You entered {num1}. Enter yes/y to continue or no/n to re-enter.")
+        confirm_points = check_answer(points_validation)
+        if confirm_points in ("no", "n"):
+            confirm_points = ""
+        elif confirm_points in ("yes", "y"):
+            confirm_points = points_validation
+        else:
+            confirm_points = ""
+    return num1
+
 
 def get_grades():
     """
@@ -77,8 +92,7 @@ def get_grades():
     row_values = wks_raw_data.row_values(row_number)
     grades = row_values
     print(f"Accepting grades for {assignment}\n")
-    points_possible = "\nWhat was the total possible score?\n"
-    num1 = check_int(points_possible)
+    num1 = get_num1()
     for student in student_list[2:]:
         confirm = ""
         while confirm == "":
