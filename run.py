@@ -77,15 +77,15 @@ def get_grades():
     row_values = wks_raw_data.row_values(row_number)
     grades = row_values
     print(f"Accepting grades for {assignment}\n")
-    points_possible = "\nWhat were the total possible points?\n"
+    points_possible = "\nWhat was the total possible score?\n"
     num1 = check_int(points_possible)
     for student in student_list[2:]:
         confirm = ""
         while confirm == "":
-            student_points = "Enter points achieved for " + student + "\n"
+            student_points = "Enter score achieved for " + student + "\n"
             num2 = check_int(student_points)
             while num2 > num1:
-                student_points = """The student score must note exceed total score possible.
+                student_points = """The student score must not exceed total possible score.
                 Please re-enter student score:\n"""
                 num2 = check_int(student_points)
             user_validation = input(f"You entered {num2}, is this correct?\n")
