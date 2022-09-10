@@ -21,12 +21,18 @@ wks_advising = SHEET.worksheet("final_result_needed")
 df = pd.DataFrame(wks_raw_data.get_all_records())
 
 def find_percent(num1, num2):
-
+    """
+    Calculates student score as a percent
+    """
     result = (num1/num2)*100
     return round(result)
 
 
 def end_program():
+    """
+    Ends to program if teacher does
+    not want to enter more results. 
+    """
     answer = ""
     while answer == "":
         answer = input("Would you like to enter more results?\n")
@@ -40,7 +46,11 @@ def end_program():
 
 
 def check_int(points):
-
+    """
+    Checks user input is an integer.
+    If it isn't, it prompts the user
+    for a valid number.
+    """
     while True:
         try:
             points = float(input(points))
@@ -50,12 +60,22 @@ def check_int(points):
 
 
 def check_answer(answer):
+    """
+    Checks the user has entered a valid
+    yes/no response. 
+    """
     answer = answer.lower()
     while answer not in ("yes", "y", "no", "n"):
-        answer = input("Please answer yes or no.\n")
+        answer = input("Please answer yes/y or no/n.\n")
     return answer
 
 def get_num1():
+    """
+    Gets the total number of points for a test
+    or assignment, checks if it's an integer and 
+    allows the user to re-enter a number if they
+    entered the wrong one.
+    """
     confirm_points = ""
     while confirm_points == "":
         points_possible = "\nWhat was the total possible score?\n"
@@ -123,6 +143,11 @@ def get_grades():
     
 
 def check_if_due():
+    """
+    Finds the first row where grades are due and
+    calls the get_grades function so the user can
+    enter the grades.
+    """
     start_col = [item for item in wks_raw_data.col_values(1) if item]
     while True:
         try:
