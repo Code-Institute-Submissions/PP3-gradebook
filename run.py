@@ -30,7 +30,7 @@ def end_program():
     answer = ""
     while answer == "":
         answer = input("Would you like to enter more results?\n")
-        answer = answer.lower()
+        check_answer(answer)
         if answer in ("yes", "y"):
             get_grades()
         if answer in ("no", "n"):
