@@ -104,7 +104,7 @@ def get_grades():
         grade = grades[index]
         wks_raw_data.update_cell(row_number, index + 1, grade)
     class_ave = int(statistics.mean(grades_only))
-    print(f"The class average for {assignment} was {class_ave}\n")
+    print(f"The class average for {assignment} was {class_ave}%\n")
     wks_raw_data.update_cell(row_number, 13, class_ave)
     
 
