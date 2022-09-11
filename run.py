@@ -42,7 +42,6 @@ def end_program():
         if answer in ("no", "n"):
             print(f"""Thank you for your update. Here are the
             results:\n""")
-            print(df)
 
 
 def check_int(points):
@@ -79,10 +78,10 @@ def get_num1():
     """
     confirm_points = ""
     while confirm_points == "":
-        points_possible = "\nWhat was the total possible score?\n"
+        points_possible = "Please enter the highest possible score?\n"
         num1 = check_int(points_possible)
         print(f"You entered {num1}. Is this correct?")
-        points_validation = input("Enter yes to continue or no to re-enter.\n")
+        points_validation = input("Enter yes/y to continue or no/n to re-enter.\n")
         confirm_points = check_answer(points_validation)
         if confirm_points in ("no", "n"):
             confirm_points = ""
@@ -115,7 +114,7 @@ def get_grades():
     grades = row_values
     print(f"Accepting grades for {assignment}\n")
     num1 = get_num1()
-    for student in student_list[2:]:
+    for student in student_list[2:-1]:
         confirm = ""
         while confirm == "":
             student_points = "Enter score achieved for " + student + "\n"
@@ -133,6 +132,7 @@ def get_grades():
                 confirm = sscore_validation
             else:
                 confirm = ""
+        print("Calculating average, please wait...")
         result = find_percent(num2, num1)
         print(f"{num2}/{num1} is {result}%")
         grades.append(result)
@@ -171,15 +171,7 @@ def main():
     check_if_due()
     end_program()
 
-instructions = ("""You will be prompted to enter grades for each student for
- the next homework or exam due.\n
- After each grade, please confirm if the grade you entered is correct.
- If you enter an incorrect grade, you will have the chance to enter it again.
- After all the grades are entered, you will be given the class average, and
- and you will be asked if you would like to add a curve to the results.\n
- The orinal scores and adjusted grades will be added to the spreadsheet on
- separate sheets. Students scores will be averaged, with and calculations will
- be made for what the student needs to gain a pass, reach the class average
- or acheive an A.\n\n""")
+instructions = ("""Welcome to Grade Center\n
+Below is a table with results you have already entered.\n""")
 print(instructions)
 main()
