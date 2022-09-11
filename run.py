@@ -35,13 +35,12 @@ def end_program():
     """
     answer = ""
     while answer == "":
-        answer = input("Would you like to enter more results?\n")
+        answer = input("Would you like to enter results?\n")
         check_answer(answer)
         if answer in ("yes", "y"):
             get_grades()
         if answer in ("no", "n"):
-            print(f"""Thank you for your update. Here are the
-            results:\n""")
+            print(f"""Thank you for using grade center.\n""")
 
 
 def check_int(points):
@@ -132,7 +131,6 @@ def get_grades():
                 confirm = sscore_validation
             else:
                 confirm = ""
-        print("Calculating average, please wait...")
         result = find_percent(num2, num1)
         print(f"{num2}/{num1} is {result}%")
         grades.append(result)
@@ -140,9 +138,11 @@ def get_grades():
     for index in range(len(grades)):
         grade = grades[index]
         wks_raw_data.update_cell(row_number, index + 1, grade)
+    print("Calculating class average, please wait...")
     class_ave = int(statistics.mean(grades_only))
     print(f"The class average for {assignment} was {class_ave}%\n")
     wks_raw_data.update_cell(row_number, 13, class_ave)
+    options()
 
 
 def check_if_due():
@@ -162,14 +162,33 @@ def check_if_due():
             break
 
 
+def options():
+    option1 = "1. Enter grades"
+    option2 = "2. View individual student results"
+    option3 = "3. View individual assignment results"
+    option4 = "4. View advising information"
+
+    print(f"""You have the following options:\n
+    {option1}\n 
+    {option2}\n
+    {option3}\n
+    {option4}\n""")
+    selection = "Choose by entering the number."
+    option = check_int(selection)
+    print(f"You choose option {option}")
+    if option == 1:
+        check_if_due()
+    else:
+        print("The options 2-4 aren't ready yet")
+        end_program()
+
 def main():
     """
     Run's the programs main functions
     """
     class_ave = df[["Date Entered", "Assignment", "Class Average"]]
     print(f"Previously entered grades and class averages:\n {class_ave}\n")
-    check_if_due()
-    end_program()
+    options()
 
 instructions = ("""Welcome to Grade Center\n
 Below is a table with results you have already entered.\n""")
