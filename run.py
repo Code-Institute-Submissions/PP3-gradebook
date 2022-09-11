@@ -14,11 +14,11 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('gradebook')
 
 wks_raw_data = SHEET.worksheet("grades_raw")
-wks_class_ave = SHEET.worksheet("target_averages")
 wks_adjusted = SHEET.worksheet("grades_adjusted_and_final")
 wks_advising = SHEET.worksheet("final_result_needed")
 
 df = pd.DataFrame(wks_raw_data.get_all_records())
+
 
 def find_percent(num1, num2):
     """
@@ -31,7 +31,7 @@ def find_percent(num1, num2):
 def end_program():
     """
     Ends to program if teacher does
-    not want to enter more results. 
+    not want to enter more results.
     """
     answer = ""
     while answer == "":
@@ -40,7 +40,7 @@ def end_program():
         if answer in ("yes", "y"):
             get_grades()
         if answer in ("no", "n"):
-            print(f"""Thank you for your update. Here are the 
+            print(f"""Thank you for your update. Here are the
             results:\n""")
             print(df)
 
@@ -62,17 +62,18 @@ def check_int(points):
 def check_answer(answer):
     """
     Checks the user has entered a valid
-    yes/no response. 
+    yes/no response.
     """
     answer = answer.lower()
     while answer not in ("yes", "y", "no", "n"):
         answer = input("Please answer yes/y or no/n.\n")
     return answer
 
+
 def get_num1():
     """
     Gets the total number of points for a test
-    or assignment, checks if it's an integer and 
+    or assignment, checks if it's an integer and
     allows the user to re-enter a number if they
     entered the wrong one.
     """
@@ -80,7 +81,8 @@ def get_num1():
     while confirm_points == "":
         points_possible = "\nWhat was the total possible score?\n"
         num1 = check_int(points_possible)
-        points_validation = input(f"You entered {num1}. Enter yes/y to continue or no/n to re-enter.")
+        print(f"You entered {num1}. Is this correct?")
+        points_validation = input("Enter yes to continue or no to re-enter.\n")
         confirm_points = check_answer(points_validation)
         if confirm_points in ("no", "n"):
             confirm_points = ""
@@ -94,7 +96,7 @@ def get_num1():
 def get_grades():
     """
     Requests total score value of test or assignment, the
-    student scores, then inserts the calculated percent 
+    student scores, then inserts the calculated percent
     into a Google Sheet with the class average.
     """
     # Get the first assignment for which grades need to be entered
@@ -122,7 +124,8 @@ def get_grades():
                 student_points = """The student score must not exceed total possible score.
                 Please re-enter student score:\n"""
                 num2 = check_int(student_points)
-            sscore_validation = input(f"You entered {num2}, is this correct?\n")
+            print(f"You entered {num2}. ")
+            sscore_validation = input("Is this correct?\n")
             confirm = check_answer(sscore_validation)
             if confirm in ("no", "n"):
                 confirm = ""
@@ -140,7 +143,7 @@ def get_grades():
     class_ave = int(statistics.mean(grades_only))
     print(f"The class average for {assignment} was {class_ave}%\n")
     wks_raw_data.update_cell(row_number, 13, class_ave)
-    
+
 
 def check_if_due():
     """
@@ -163,7 +166,8 @@ def main():
     """
     Run's the programs main functions
     """
-    print(f"Here are the current student grades for your class:\n {df}\n")
+    class_ave = df[["Date Entered", "Assignment", "Class Average"]]
+    print(f"Previously entered grades and class averages:\n {class_ave}\n")
     check_if_due()
     end_program()
 
