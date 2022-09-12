@@ -1,4 +1,5 @@
 import statistics
+
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
@@ -20,7 +21,8 @@ wks_advising = SHEET.worksheet("final_result_needed")
 df = pd.DataFrame(wks_raw_data.get_all_records())
 
 def get_student_records():
-    print(df.iloc[0, 3:])
+    print(df.iloc[0, 3:-1
+    ])
     name  = input("Enter student's name:")
     student = df[["Assignment", name]]
     print(student)
@@ -42,12 +44,12 @@ def end_program():
     """
     answer = ""
     while answer == "":
-        answer = input("Would you like to enter results?\n")
+        answer = input("Do you really want to exit?\n")
         check_answer(answer)
         if answer in ("yes", "y"):
-            get_grades()
-        if answer in ("no", "n"):
             print(f"""Thank you for using grade center.\n""")
+        if answer in ("no", "n"):
+            options()
 
 
 def check_int(points):
