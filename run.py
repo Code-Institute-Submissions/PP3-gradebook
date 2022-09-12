@@ -186,16 +186,14 @@ def check_if_due():
 def options():
     option1 = "1. Enter grades"
     option2 = "2. View individual student results"
-    option3 = "3. View individual assignment results"
-    option4 = "4. View class averages"
-    option5 = "5. Quit"
+    option3 = "3. View class averages"
+    option4 = "4. Quit"
 
     print(f"""You have the following options:\n
     {option1}\n 
     {option2}\n
     {option3}\n
-    {option4}\n
-    {option5}\n""")
+    {option4}\n""")
     selection = "Choose by entering the number."
     option = check_int(selection)
     print(f"You chose option {option}")
@@ -203,10 +201,11 @@ def options():
         check_if_due()
     elif option == 2:
         get_student_records()
-    elif option == 5:
+    elif option == 3:
+        get_averages()
+    elif option == 4:
         end_program()
     else:
-        print("The options 2-4 aren't ready yet")
         end_program()
 
 def main():
