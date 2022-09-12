@@ -1,6 +1,7 @@
 import statistics
-from fuzzywuzzy import fuzz
-from fuzzywuzzy import process 
+import fuzzy_pandas
+#from fuzzywuzzy import fuzz
+#from fuzzywuzzy import process 
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
@@ -18,17 +19,26 @@ SHEET = GSPREAD_CLIENT.open('gradebook')
 wks_raw_data = SHEET.worksheet("grades_raw")
 wks_adjusted = SHEET.worksheet("grades_adjusted_and_final")
 wks_advising = SHEET.worksheet("final_result_needed")
+wks_class_list = SHEET.worksheet("class_list")
 
 df = pd.DataFrame(wks_raw_data.get_all_records())
+df2 = pd.DataFrame(wks_class_list.get_all_records())
 
 def get_student_records():
     print("Here is your classlist:\n\n")
-    print(df.iloc[0, 3:-1
-    ])
-    name  = input("\n\nEnter the student's name:")
-    student = df[["Assignment", name]]
-    print(student)
-    options()
+    student_num = (df2[["Number", "Students"]].to_string(index = False))
+    print(student_num)
+    user_choice = input("Choose a number: \n")
+    student = (df2["Students"][int(user_choice)-1])
+    print("Results:\n")
+    result = df[["Assignment", student]].to_string(index = False)
+    print(result)
+    answer = input("Do you wish to view another student's records?")
+    check_answer(answer)
+    if answer in ("yes", "y"):
+            get_student_records()
+    elif answer in ("no", "n"):
+        options()
 
 
 def find_percent(num1, num2):
