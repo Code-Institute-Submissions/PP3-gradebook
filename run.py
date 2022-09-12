@@ -1,5 +1,6 @@
 import statistics
-
+from fuzzywuzzy import fuzz
+from fuzzywuzzy import process 
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
@@ -21,9 +22,10 @@ wks_advising = SHEET.worksheet("final_result_needed")
 df = pd.DataFrame(wks_raw_data.get_all_records())
 
 def get_student_records():
+    print("Here is your classlist:\n\n")
     print(df.iloc[0, 3:-1
     ])
-    name  = input("Enter student's name:")
+    name  = input("\n\nEnter the student's name:")
     student = df[["Assignment", name]]
     print(student)
     options()
