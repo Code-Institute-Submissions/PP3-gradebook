@@ -24,6 +24,10 @@ wks_class_list = SHEET.worksheet("class_list")
 df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
 
+def get_averages():
+    summary = (df[["Date Entered", "Assignment", "Class Average"]])
+    print(f"Previously entered grades and class averages:\n {summary}\n")
+    options()
 def get_student_records():
     print("Here is your classlist:\n\n")
     student_num = (df2[["Number", "Students"]].to_string(index = False))
@@ -56,7 +60,7 @@ def end_program():
     """
     answer = ""
     while answer == "":
-        answer = input("Would you like to exit?\n")
+        answer = input("Would you really like to exit?\n")
         check_answer(answer)
         if answer in ("yes", "y"):
             print(f"""Thank you for using Grade Center.\n""")
@@ -212,8 +216,6 @@ def main():
     """
     Run's the programs main functions
     """
-    summary = df[["Date Entered", "Assignment", "Class Average"]]
-    print(f"Previously entered grades and class averages:\n {summary}\n")
     options()
 
 
