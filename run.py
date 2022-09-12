@@ -19,6 +19,13 @@ wks_advising = SHEET.worksheet("final_result_needed")
 
 df = pd.DataFrame(wks_raw_data.get_all_records())
 
+def get_student_records():
+    print(df.iloc[0, 3:])
+    name  = input("Enter student's name:")
+    student = df[["Assignment", name]]
+    print(student)
+    options()
+
 
 def find_percent(num1, num2):
     """
@@ -166,18 +173,24 @@ def options():
     option1 = "1. Enter grades"
     option2 = "2. View individual student results"
     option3 = "3. View individual assignment results"
-    option4 = "4. View advising information"
+    option4 = "4. View class averages"
+    option5 = "5. Quit"
 
     print(f"""You have the following options:\n
     {option1}\n 
     {option2}\n
     {option3}\n
-    {option4}\n""")
+    {option4}\n
+    {option5}\n""")
     selection = "Choose by entering the number."
     option = check_int(selection)
-    print(f"You choose option {option}")
+    print(f"You chose option {option}")
     if option == 1:
         check_if_due()
+    elif option == 2:
+        get_student_records()
+    elif option == 5:
+        end_program()
     else:
         print("The options 2-4 aren't ready yet")
         end_program()
@@ -186,9 +199,11 @@ def main():
     """
     Run's the programs main functions
     """
-    class_ave = df[["Date Entered", "Assignment", "Class Average"]]
-    print(f"Previously entered grades and class averages:\n {class_ave}\n")
+    summary = df[["Date Entered", "Assignment", "Class Average"]]
+    print(f"Previously entered grades and class averages:\n {summary}\n")
     options()
+
+
 
 instructions = ("""Welcome to Grade Center\n
 Below is a table with results you have already entered.\n""")
