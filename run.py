@@ -56,10 +56,10 @@ def end_program():
     """
     answer = ""
     while answer == "":
-        answer = input("Do you really want to exit?\n")
+        answer = input("Would you like to exit?\n")
         check_answer(answer)
         if answer in ("yes", "y"):
-            print(f"""Thank you for using grade center.\n""")
+            print(f"""Thank you for using Grade Center.\n""")
         if answer in ("no", "n"):
             options()
 
@@ -194,9 +194,8 @@ def options():
     {option2}\n
     {option3}\n
     {option4}\n""")
-    selection = "Choose by entering the number."
+    selection = "Choose by entering the number.\n"
     option = check_int(selection)
-    print(f"You chose option {option}")
     if option == 1:
         check_if_due()
     elif option == 2:
@@ -206,6 +205,7 @@ def options():
     elif option == 4:
         end_program()
     else:
+        print(f"{option} is not a valid response")
         end_program()
 
 def main():
