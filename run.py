@@ -77,7 +77,7 @@ def get_student_records():
     result = df[["Assignment", student]].to_string(index=False)
     print(result)
     answer = input("Do you wish to view another student's records?")
-    check_answer(answer)
+    answer = check_answer(answer)
     if answer in ("yes", "y"):
         get_student_records()
     elif answer in ("no", "n"):
@@ -97,8 +97,6 @@ def end_program():
     Ends to program if teacher does
     not want to enter more results.
     """
-    #answer = ""
-    #while answer == "":
     answer = input("Would you like to exit?\n")
     answer = check_answer(answer)
     if answer in ("yes", "y"):
