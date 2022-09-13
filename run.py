@@ -97,17 +97,17 @@ def end_program():
     Ends to program if teacher does
     not want to enter more results.
     """
-    answer = ""
-    while answer == "":
-        answer = input("Would you like to exit?\n")
-        check_answer(answer)
-        if answer in ("yes", "y"):
-            print(f"""Thank you for using Grade Center.\n""")
-        if answer in ("no", "n"):
-            options()
+    #answer = ""
+    #while answer == "":
+    answer = input("Would you like to exit?\n")
+    answer = check_answer(answer)
+    if answer in ("yes", "y"):
+        print(f"Thank you for using Grade Center.\n")
+    if answer in ("no", "n"):
+        options()
 
 
-def check_int(points):
+def check_int(num):
     """
     Checks user input is an integer.
     If it isn't, it prompts the user
@@ -115,8 +115,8 @@ def check_int(points):
     """
     while True:
         try:
-            points = float(input(points))
-            return points
+            num = int(input(num))
+            return num
         except ValueError:
             print("Please enter a valid number.")
 
