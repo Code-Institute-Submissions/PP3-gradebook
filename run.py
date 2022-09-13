@@ -24,7 +24,18 @@ wks_class_list = SHEET.worksheet("class_list")
 df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
 
+def plot_points(row_number, grades_weighted):
+
+    for index in range(len(grades_weighted)):
+        grade = grades_weighted[index]
+        wks_adjusted.update_cell(row_number, index + 3, grade)    
+
+
 def weighted_points(assignment, result):
+    """
+    Convert the list of percentages into weighted points 
+    which will contribute to the final grade
+    """
     weights = {
         "Homework": 0.05,
         "Quiz": 0.1,
@@ -153,7 +164,6 @@ def get_grades():
     grades = []
     grades_weighted = []
     student_list = wks_raw_data.row_values(1)
-    # row_length = len(student_list)
     row_number = index + 1
     row_values = wks_raw_data.row_values(row_number)
     grades = row_values
@@ -183,9 +193,9 @@ def get_grades():
         print(f"This assignment contributes {grade_to_points} towards the final grade.")
         grades.append(result)
         grades_weighted.append(grade_to_points)
-    print(grades_weighted)
-    grades_only = grades[2:]
     print("Updating spreadsheet and calculating class average, please wait...")
+    plot_points(row_number, grades_weighted)
+    grades_only = grades[2:]
     for index in range(len(grades)):
         grade = grades[index]
         wks_raw_data.update_cell(row_number, index + 1, grade)
