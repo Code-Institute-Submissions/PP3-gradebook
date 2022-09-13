@@ -1,7 +1,7 @@
 import statistics
-import fuzzy_pandas
 import gspread
 import pandas as pd
+from gspread_formatting  import *
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
