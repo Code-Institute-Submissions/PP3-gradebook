@@ -24,6 +24,17 @@ wks_class_list = SHEET.worksheet("class_list")
 df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
 
+def weighted_points(assignment, result):
+    weights = {
+        "Homework": 0.05,
+        "Quiz": 0.1,
+        "Midterm": 0.20,
+        "Final": 0.40,
+    }
+    assignment_points = result * weights[assignment]
+    return assignment_points
+
+
 def get_averages():
     """
     Gets and displays class averages for each
@@ -166,7 +177,9 @@ def get_grades():
             else:
                 confirm = ""
         result = find_percent(num2, num1)
+        grade_to_points = weighted_points(assignment, result)
         print(f"{num2}/{num1} is {result}%")
+        print(f"This assignment contributes {grade_to_points} towards the final grade.")
         grades.append(result)
     grades_only = grades[2:]
     for index in range(len(grades)):
@@ -202,7 +215,7 @@ def options():
     option3 = "3. View class averages"
     option4 = "4. Quit"
 
-    print(f"""You have the following options:\n
+    print(f"""Please select from the following options:\n
     {option1}\n 
     {option2}\n
     {option3}\n
@@ -225,10 +238,7 @@ def main():
     """
     Run's the programs main functions
     """
-    
     options()
-
-
 
 instructions = ("""Welcome to Grade Center.\n""")
 print(instructions)
