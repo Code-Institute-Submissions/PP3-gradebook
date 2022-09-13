@@ -151,6 +151,7 @@ def get_grades():
     # Get grades from user. User enters total points and
     # a percentage is calculated.
     grades = []
+    grades_weighted = []
     student_list = wks_raw_data.row_values(1)
     # row_length = len(student_list)
     row_number = index + 1
@@ -181,11 +182,13 @@ def get_grades():
         print(f"{num2}/{num1} is {result}%")
         print(f"This assignment contributes {grade_to_points} towards the final grade.")
         grades.append(result)
+        grades_weighted.append(grade_to_points)
+    print(grades_weighted)
     grades_only = grades[2:]
+    print("Updating spreadsheet and calculating class average, please wait...")
     for index in range(len(grades)):
         grade = grades[index]
         wks_raw_data.update_cell(row_number, index + 1, grade)
-    print("Calculating class average, please wait...")
     class_ave = int(statistics.mean(grades_only))
     print(f"The class average for {assignment} was {class_ave}%\n")
     wks_raw_data.update_cell(row_number, 13, class_ave)
