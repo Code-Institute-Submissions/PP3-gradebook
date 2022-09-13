@@ -163,7 +163,6 @@ def get_grades():
     start_col = [item for item in wks_raw_data.col_values(1) if item]
     index = start_col.index("due")
     assignment = wks_raw_data.cell(index + 1, 2).value
-    wks_raw_data.update_cell(index+1, 1, "=TODAY()")
 
     # Get grades from user. User enters total points and
     # a percentage is calculated.
@@ -199,6 +198,7 @@ def get_grades():
         grades.append(result)
         grades_weighted.append(grade_to_points)
     print("Updating spreadsheet and calculating class average, please wait...")
+    wks_raw_data.update_cell(index+1, 1, "=TODAY()")
     grades_only = grades[2:]
     for index in range(len(grades)):
         grade = grades[index]
