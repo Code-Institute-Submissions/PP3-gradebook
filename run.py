@@ -64,6 +64,8 @@ def get_student_records():
     Allows the user to see results for 
     individual students
     """
+    df = pd.DataFrame(wks_raw_data.get_all_records())
+    df2 = pd.DataFrame(wks_class_list.get_all_records())
     print("Here is your classlist:\n\n")
     student_num = (df2[["Number", "Students"]].to_string(index=False))
     print(student_num)
@@ -77,7 +79,7 @@ def get_student_records():
     answer = input("Do you wish to view another student's records?")
     check_answer(answer)
     if answer in ("yes", "y"):
-            get_student_records()
+        get_student_records()
     elif answer in ("no", "n"):
         options()
 
@@ -163,6 +165,7 @@ def get_grades():
     start_col = [item for item in wks_raw_data.col_values(1) if item]
     index = start_col.index("due")
     assignment = wks_raw_data.cell(index + 1, 2).value
+    wks_raw_data.update_cell(index+1, 1, "=TODAY()")
 
     # Get grades from user. User enters total points and
     # a percentage is calculated.
@@ -198,7 +201,6 @@ def get_grades():
         grades.append(result)
         grades_weighted.append(grade_to_points)
     print("Updating spreadsheet and calculating class average, please wait...")
-    wks_raw_data.update_cell(index+1, 1, "=TODAY()")
     grades_only = grades[2:]
     for index in range(len(grades)):
         grade = grades[index]
@@ -228,6 +230,7 @@ def check_if_due():
 
 
 def options():
+    
     option1 = "1. Enter grades"
     option2 = "2. View individual student results"
     option3 = "3. View class averages"
