@@ -1,7 +1,9 @@
 import statistics
+import fuzzy_pandas
+# from fuzzywuzzy import fuzz
+# from fuzzywuzzy import process
 import gspread
 import pandas as pd
-from gspread_formatting  import *
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -54,8 +56,7 @@ def get_averages():
     Gets and displays class averages for each
     assignment or exam
     """
-    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string
-    (index=False)
+    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string(index=False)
     print(f"Class averages for previously entered grades:\n {summary}\n")
     options()
 
@@ -141,8 +142,7 @@ def get_num1():
         points_possible = "Please enter the highest possible score?\n"
         num1 = check_int(points_possible)
         print(f"You entered {num1}. Is this correct?")
-        points_validation = input("""Enter yes/y to continue or no/n
-        to re-enter.\n""")
+        points_validation = input("Enter yes/y to continue or no/n to re-enter.\n")
         confirm_points = check_answer(points_validation)
         if confirm_points in ("no", "n"):
             confirm_points = ""
@@ -181,8 +181,7 @@ def get_grades():
             student_points = "Enter score achieved for " + student + "\n"
             num2 = check_int(student_points)
             while num2 > num1:
-                student_points = """The student score must not exceed total possible score.
-                Please re-enter student score:\n"""
+                student_points = """The student score must not exceed total possible score.Please re-enter student score:\n"""
                 num2 = check_int(student_points)
             print(f"You entered {num2}. ")
             sscore_validation = input("Is this correct?\n")
@@ -196,12 +195,10 @@ def get_grades():
         result = find_percent(num2, num1)
         grade_to_points = weighted_points(assignment, result)
         print(f"{num2}/{num1} is {result}%")
-        print(f"""This assignment contributes {grade_to_points} towards the
-        final grade.""")
+        print(f"This assignment contributes {grade_to_points} towards the final grade.")
         grades.append(result)
         grades_weighted.append(grade_to_points)
     print("Updating spreadsheet and calculating class average, please wait...")
-    plot_points(row_number, grades_weighted)
     grades_only = grades[2:]
     for index in range(len(grades)):
         grade = grades[index]
@@ -209,6 +206,7 @@ def get_grades():
     class_ave = int(statistics.mean(grades_only))
     print(f"The class average for {assignment} was {class_ave}%\n")
     wks_raw_data.update_cell(row_number, 13, class_ave)
+    plot_points(row_number, grades_weighted)
     options()
 
 
@@ -236,7 +234,7 @@ def options():
     option4 = "4. Quit"
 
     print(f"""Please select from the following options:\n
-    {option1}\n 
+    {option1}\n
     {option2}\n
     {option3}\n
     {option4}\n""")
@@ -253,6 +251,7 @@ def options():
     else:
         print(f"{option} is not a valid response")
         end_program()
+
 
 def main():
     """
