@@ -1,7 +1,5 @@
 import statistics
 import fuzzy_pandas
-#from fuzzywuzzy import fuzz
-#from fuzzywuzzy import process 
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
@@ -24,16 +22,21 @@ wks_class_list = SHEET.worksheet("class_list")
 df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
 
-def plot_points(row_number, grades_weighted):
 
+def plot_points(row_number, grades_weighted):
+    """
+    After grades are converted to points this
+    function places them in the
+    'grades_adjusted_and_final' worksheet.
+    """
     for index in range(len(grades_weighted)):
         grade = grades_weighted[index]
-        wks_adjusted.update_cell(row_number, index + 3, grade)    
+        wks_adjusted.update_cell(row_number, index + 3, grade)
 
 
 def weighted_points(assignment, result):
     """
-    Convert the list of percentages into weighted points 
+    Convert the list of percentages into weighted points
     which will contribute to the final grade
     """
     weights = {
@@ -51,22 +54,24 @@ def get_averages():
     Gets and displays class averages for each
     assignment or exam
     """
-    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string(index = False)
+    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string
+    (index=False)
     print(f"Class averages for previously entered grades:\n {summary}\n")
     options()
 
+
 def get_student_records():
     """
-    Allows the user to see results for 
+    Allows the user to see results for
     individual students
     """
     print("Here is your classlist:\n\n")
-    student_num = (df2[["Number", "Students"]].to_string(index = False))
+    student_num = (df2[["Number", "Students"]].to_string(index=False))
     print(student_num)
     user_choice = input("Choose a number: \n")
     student = (df2["Students"][int(user_choice)-1])
     print("Results:\n")
-    result = df[["Assignment", student]].to_string(index = False)
+    result = df[["Assignment", student]].to_string(index=False)
     print(result)
     answer = input("Do you wish to view another student's records?")
     check_answer(answer)
@@ -136,7 +141,8 @@ def get_num1():
         points_possible = "Please enter the highest possible score?\n"
         num1 = check_int(points_possible)
         print(f"You entered {num1}. Is this correct?")
-        points_validation = input("Enter yes/y to continue or no/n to re-enter.\n")
+        points_validation = input("""Enter yes/y to continue or no/n
+        to re-enter.\n""")
         confirm_points = check_answer(points_validation)
         if confirm_points in ("no", "n"):
             confirm_points = ""
@@ -190,7 +196,8 @@ def get_grades():
         result = find_percent(num2, num1)
         grade_to_points = weighted_points(assignment, result)
         print(f"{num2}/{num1} is {result}%")
-        print(f"This assignment contributes {grade_to_points} towards the final grade.")
+        print(f"""This assignment contributes {grade_to_points} towards the
+        final grade.""")
         grades.append(result)
         grades_weighted.append(grade_to_points)
     print("Updating spreadsheet and calculating class average, please wait...")
