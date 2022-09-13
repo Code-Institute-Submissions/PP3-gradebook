@@ -1,7 +1,7 @@
 import statistics
-import fuzzy_pandas
+# import fuzzy_pandas
 # from fuzzywuzzy import fuzz
-# from fuzzywuzzy import process
+# from fuzzywuzzy import process 
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
@@ -24,21 +24,20 @@ wks_class_list = SHEET.worksheet("class_list")
 df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
 
-
 def plot_points(row_number, grades_weighted):
     """
     After grades are converted to points this
-    function places them in the
+    function places them in the 
     'grades_adjusted_and_final' worksheet.
     """
     for index in range(len(grades_weighted)):
         grade = grades_weighted[index]
-        wks_adjusted.update_cell(row_number, index + 3, grade)
+        wks_adjusted.update_cell(row_number, index + 3, grade)   
 
 
 def weighted_points(assignment, result):
     """
-    Convert the list of percentages into weighted points
+    Convert the list of percentages into weighted points 
     which will contribute to the final grade
     """
     weights = {
@@ -56,21 +55,22 @@ def get_averages():
     Gets and displays class averages for each
     assignment or exam
     """
-    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string(index=False)
+    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string(index = False)
     print(f"Class averages for previously entered grades:\n {summary}\n")
     options()
 
-
 def get_student_records():
     """
-    Allows the user to see results for
+    Allows the user to see results for 
     individual students
     """
     print("Here is your classlist:\n\n")
     student_num = (df2[["Number", "Students"]].to_string(index=False))
     print(student_num)
-    user_choice = input("Choose a number: \n")
-    student = (df2["Students"][int(user_choice)-1])
+    user_choice = int(input("Choose a number: \n"))
+    while user_choice > (len(df2["Students"])):
+        user_choice = int(input("Choose a number: \n"))
+    student = (df2["Students"][user_choice-1])
     print("Results:\n")
     result = df[["Assignment", student]].to_string(index=False)
     print(result)
@@ -234,7 +234,7 @@ def options():
     option4 = "4. Quit"
 
     print(f"""Please select from the following options:\n
-    {option1}\n
+    {option1}\n 
     {option2}\n
     {option3}\n
     {option4}\n""")
@@ -251,7 +251,6 @@ def options():
     else:
         print(f"{option} is not a valid response")
         end_program()
-
 
 def main():
     """
