@@ -25,10 +25,19 @@ df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
 
 def get_averages():
-    summary = (df[["Date Entered", "Assignment", "Class Average"]])
-    print(f"Previously entered grades and class averages:\n {summary}\n")
+    """
+    Gets and displays class averages for each
+    assignment or exam
+    """
+    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string(index = False)
+    print(f"Class averages for previously entered grades:\n {summary}\n")
     options()
+
 def get_student_records():
+    """
+    Allows the user to see results for 
+    individual students
+    """
     print("Here is your classlist:\n\n")
     student_num = (df2[["Number", "Students"]].to_string(index = False))
     print(student_num)
@@ -60,7 +69,7 @@ def end_program():
     """
     answer = ""
     while answer == "":
-        answer = input("Would you really like to exit?\n")
+        answer = input("Would you like to exit?\n")
         check_answer(answer)
         if answer in ("yes", "y"):
             print(f"""Thank you for using Grade Center.\n""")
@@ -216,11 +225,11 @@ def main():
     """
     Run's the programs main functions
     """
+    
     options()
 
 
 
-instructions = ("""Welcome to Grade Center\n
-Below is a table with results you have already entered.\n""")
+instructions = ("""Welcome to Grade Center.\n""")
 print(instructions)
 main()
