@@ -279,28 +279,33 @@ def calc_term_grade():
 
     #names = Get the list of student names to iterate through
     students = wks_advising.row_values(1)
-    #student_list = students[1:]
+    student_list = students[1:]
     #print(student_list)
-    #print(len(student_list))
+    num_students = len(student_list)
+    print(f"This is the length of the student list: {num_students}")
     #Get the points for the student - need to create values variable
-    student_scores_earned = [item for item in wks_adjusted.col_values(3) if item][1:]
-    #Convert list to floats
-    student_scores_earned = [float(item) for item in student_scores_earned]
-    print(f"These are scores that have been entered: {student_scores_earned}")
-    #Get the list of weights and convert into floats
-    weights_list = [item for item in wks_adjusted.col_values(2) if item][1:]
-    weights_list = [float(item) for item in weights_list]
-    print(f"This is the list of the weights: {weights_list}")
-    #Get the sum of all the weights
-    total_points_possible = sum(weights_list)
-    #Slice using the length of the student scores earned
-    length = len(student_scores_earned)
-    print(f"This is the length of the student scores list: {length}")
-    weights_used = weights_list[0:length]
-    print(f"These are the weights that have been used already:{weights_used}")
-    weights_to_be_used = weights_list[length:]
-    print(f"These are the weights still to be applied: {weights_to_be_used}")
-
+    num = 3
+    for student in student_list:
+        student_scores_earned = [item for item in wks_adjusted.col_values(num) if item][1:]
+        print(num)
+        #Convert list to floats
+        student_scores_earned = [float(item) for item in student_scores_earned]
+        print(f"These are scores that have been entered: {student_scores_earned}")
+        #Get the list of weights and convert into floats
+        weights_list = [item for item in wks_adjusted.col_values(2) if item][1:]
+        weights_list = [float(item) for item in weights_list]
+        print(f"This is the list of the weights: {weights_list}")
+        #Get the sum of all the weights
+        total_points_possible = sum(weights_list)
+        # Slice using the length of the student scores earned
+        length = len(student_scores_earned)
+        print(f"This is the length of the student scores list: {length}")
+        weights_used = weights_list[0:length]
+        print(f"These are the weights that have been used already:{weights_used}")
+        weights_to_be_used = weights_list[length:]
+        print(f"These are the weights still to be applied: {weights_to_be_used}")
+        # current_average = 
+        num += 1
 
 
 calc_term_grade()
