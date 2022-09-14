@@ -23,6 +23,7 @@ wks_class_list = SHEET.worksheet("class_list")
 
 df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
+df3 = pd.DataFrame(wks_adjusted.get_all_records())
 
 def plot_points(row_number, grades_weighted):
     """
@@ -57,7 +58,7 @@ def get_averages():
     """
     summary = df[["Date Entered", "Assignment", "Class Average"]].to_string(index = False)
     print(f"Class averages for previously entered grades:\n {summary}\n")
-    options()
+    main()
 
 def get_student_records():
     """
@@ -81,7 +82,7 @@ def get_student_records():
     if answer in ("yes", "y"):
         get_student_records()
     elif answer in ("no", "n"):
-        options()
+        main()
 
 
 def find_percent(num1, num2):
@@ -102,7 +103,7 @@ def end_program():
     if answer in ("yes", "y"):
         print(f"Thank you for using Grade Center.\n")
     if answer in ("no", "n"):
-        options()
+        main()
 
 
 def check_int(num):
@@ -207,7 +208,7 @@ def get_grades():
     print(f"The class average for {assignment} was {class_ave}%\n")
     wks_raw_data.update_cell(row_number, 13, class_ave)
     plot_points(row_number, grades_weighted)
-    options()
+    main()
 
 
 def check_if_due():
@@ -227,8 +228,10 @@ def check_if_due():
             break
 
 
-def options():
-    
+def main():
+    """
+    Run's the programs main functions
+    """
     option1 = "1. Enter grades"
     option2 = "2. View individual student results"
     option3 = "3. View class averages"
@@ -252,13 +255,52 @@ def options():
     else:
         print(f"{option} is not a valid response")
         end_program()
+    
 
-def main():
-    """
-    Run's the programs main functions
-    """
-    options()
 
 instructions = ("""Welcome to Grade Center.\n""")
 print(instructions)
-main()
+#main()
+def calc_term_grade():
+    """
+    While grades are incomplete, it tells the user
+    what the student needs to achive an A, B, C or D.
+    When grades are complete, it gives a final term 
+    grade and converts the result.
+    """
+    #Create dictionary for grade values
+    letter_grades = {
+        "A": 94,
+        "B": 83,
+        "C": 77,
+        "D": 67,
+        "Pass": 60,
+    }
+
+    #names = Get the list of student names to iterate through
+    students = wks_advising.row_values(1)
+    #student_list = students[1:]
+    #print(student_list)
+    #print(len(student_list))
+    #Get the points for the student - need to create values variable
+    student_scores_earned = [item for item in wks_adjusted.col_values(3) if item][1:]
+    #Convert list to floats
+    student_scores_earned = [float(item) for item in student_scores_earned]
+    print(f"These are scores that have been entered: {student_scores_earned}")
+    #Get the list of weights and convert into floats
+    weights_list = [item for item in wks_adjusted.col_values(2) if item][1:]
+    weights_list = [float(item) for item in weights_list]
+    print(f"This is the list of the weights: {weights_list}")
+    #Get the sum of all the weights
+    total_points_possible = sum(weights_list)
+    #Slice using the length of the student scores earned
+    length = len(student_scores_earned)
+    print(f"This is the length of the student scores list: {length}")
+    weights_used = weights_list[0:length]
+    print(f"These are the weights that have been used already:{weights_used}")
+    weights_to_be_used = weights_list[length:]
+    print(f"These are the weights still to be applied: {weights_to_be_used}")
+
+
+
+calc_term_grade()
