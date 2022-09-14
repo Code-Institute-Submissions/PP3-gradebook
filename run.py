@@ -154,6 +154,64 @@ def get_num1():
     return num1
 
 
+def calc_term_grade():
+    """
+    While grades are incomplete, it tells the user
+    what the student needs to achive an A, B, C or D.
+    When grades are complete, it gives a final term 
+    grade and converts the result.
+    """
+    #Create dictionary for grade values
+    letter_grades = {
+        "A": 94,
+        "B": 83,
+        "C": 77,
+        "D": 67,
+        "Pass": 60,
+    }
+
+    #names = Get the list of student names to iterate through
+    students = wks_advising.row_values(1)
+    student_list = students[1:]
+    #print(student_list)
+    num_students = len(student_list)
+    print(f"This is the length of the student list: {num_students}")
+    #Get the points for the student - need to create values variable
+    num = 3
+    for student in student_list:
+        student_scores_earned = [item for item in wks_adjusted.col_values(num) if item][1:]
+        #Convert list to floats
+        student_scores_earned = [float(item) for item in student_scores_earned]
+        #Get the list of weights and convert into floats
+        weights_list = [item for item in wks_adjusted.col_values(2) if item][1:]
+        weights_list = [float(item) for item in weights_list]
+        #Get the sum of all the weights
+        total_points_possible = sum(weights_list)
+        # Slice using the length of the student scores earned
+        length = len(student_scores_earned)
+        weights_used = weights_list[0:length]
+        weights_to_be_used = weights_list[length:]
+        # Add calcuations
+        sum1_scores = sum(student_scores_earned)
+        sum2_weights = sum(weights_used)
+        current_average = int((sum1_scores/sum2_weights)*100)
+        print(f"The current average is: {current_average}")
+        list_averages = []
+        row = 2
+        for key in letter_grades:
+            col = num-1
+            print(f"This is the value of num: {num}")
+            ave_needed = int(((letter_grades[key] - sum1_scores)/sum(weights_to_be_used))*100)
+            if ave_needed > 100:
+                message = "Not possible"
+            else:
+                message = ave_needed
+            list_averages.append(message)
+            wks_advising.update_cell(row, col, message)
+            row+=1
+        num += 1
+
+
 def get_grades():
     """
     Requests total score value of test or assignment, the
@@ -261,64 +319,8 @@ def main():
 
 instructions = ("""Welcome to Grade Center.\n""")
 print(instructions)
-#main()
-def calc_term_grade():
-    """
-    While grades are incomplete, it tells the user
-    what the student needs to achive an A, B, C or D.
-    When grades are complete, it gives a final term 
-    grade and converts the result.
-    """
-    #Create dictionary for grade values
-    letter_grades = {
-        "A": 94,
-        "B": 83,
-        "C": 77,
-        "D": 67,
-        "Pass": 60,
-    }
+main()
 
-    #names = Get the list of student names to iterate through
-    students = wks_advising.row_values(1)
-    student_list = students[1:]
-    #print(student_list)
-    num_students = len(student_list)
-    print(f"This is the length of the student list: {num_students}")
-    #Get the points for the student - need to create values variable
-    num = 3
-    for student in student_list:
-        student_scores_earned = [item for item in wks_adjusted.col_values(num) if item][1:]
-        #Convert list to floats
-        student_scores_earned = [float(item) for item in student_scores_earned]
-        #Get the list of weights and convert into floats
-        weights_list = [item for item in wks_adjusted.col_values(2) if item][1:]
-        weights_list = [float(item) for item in weights_list]
-        #Get the sum of all the weights
-        total_points_possible = sum(weights_list)
-        # Slice using the length of the student scores earned
-        length = len(student_scores_earned)
-        weights_used = weights_list[0:length]
-        weights_to_be_used = weights_list[length:]
-        # Add calcuations
-        sum1_scores = sum(student_scores_earned)
-        sum2_weights = sum(weights_used)
-        current_average = int((sum1_scores/sum2_weights)*100)
-        print(f"The current average is: {current_average}")
-        list_averages = []
-        row = 2
-        for key in letter_grades:
-            col = num-1
-            print(f"This is the value of num: {num}")
-            ave_needed = int(((letter_grades[key] - sum1_scores)/sum(weights_to_be_used))*100)
-            if ave_needed > 100:
-                message = "Not possible"
-            else:
-                message = ave_needed
-            list_averages.append(message)
-            wks_advising.update_cell(row, col, message)
-            row+=1
-        num += 1
         
-
 
 
