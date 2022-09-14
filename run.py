@@ -154,7 +154,7 @@ def get_num1():
     return num1
 
 
-def calc_term_grade():
+def calc_points_needed():
     """
     While grades are incomplete, it tells the user
     what the student needs to achive an A, B, C or D.
@@ -266,7 +266,8 @@ def get_grades():
     print(f"The class average for {assignment} was {class_ave}%\n")
     wks_raw_data.update_cell(row_number, 13, class_ave)
     plot_points(row_number, grades_weighted)
-    calc_term_grade()
+    calc_points_needed()
+    
     main()
 
 
