@@ -208,6 +208,7 @@ def get_grades():
     print(f"The class average for {assignment} was {class_ave}%\n")
     wks_raw_data.update_cell(row_number, 13, class_ave)
     plot_points(row_number, grades_weighted)
+    calc_term_grade()
     main()
 
 
@@ -320,4 +321,4 @@ def calc_term_grade():
         
 
 
-calc_term_grade()
+
