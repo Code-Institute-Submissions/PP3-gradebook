@@ -71,7 +71,7 @@ def weighted_points(assignment, result):
         "Midterm": 0.20,
         "Final": 0.40,
     }
-    assignment_points = result * weights[assignment]
+    assignment_points = round(result * weights[assignment], 2)
     return assignment_points
 
 
@@ -128,6 +128,7 @@ def find_percent(num1, num2):
     Calculates student score as a percent
     """
     result = int((num1/num2)*100)
+    result = round(result, 2)
     return round(result, 2)
 
 
@@ -295,16 +296,16 @@ def get_grades():
         print(f"This contributes {grade_to_points} to the term grade.\n")
         grades.append(result)
         grades_weighted.append(grade_to_points)
-    print("Updating spreadsheet and calculating class average, please wait...")
+    print("Updating spreadsheet and calculating class average, please wait...\n")
     grades_only = grades[2:]
     for index in range(len(grades)):
         grade = grades[index]
         wks_raw_data.update_cell(row_number, index + 1, grade)
     class_ave = int(statistics.mean(grades_only))
     print(f"The class average for {assignment} was {class_ave}%\n")
-    print("Calcuating points from waited grades.")
-    print("Calcuating advising grades.")
-    print("Please wait for Options Menu.")
+    print("Calcuating points from waited grades.\n")
+    print("Calcuating advising grades.\n")
+    print("Please wait for Options Menu.\n")
     wks_raw_data.update_cell(row_number, 8, class_ave)
     plot_points(row_number, grades_weighted)
     check_final_grade(assignment)
