@@ -154,7 +154,7 @@ def get_num1():
     """
     confirm_points = ""
     while confirm_points == "":
-        points_possible = "Please enter the total possible score?\n"
+        points_possible = "What as the total possible score?\n"
         num1 = check_int(points_possible)
         print(f"You entered {num1}. Is this correct?")
         points_validation = input("Respond with yes/y or no/n.\n")
@@ -307,7 +307,7 @@ def get_grades():
     print("Calcuating points from waited grades.\n")
     print("Calcuating advising grades.\n")
     print("Please wait for Options Menu.\n")
-    
+
     wks_raw_data.update_cell(row_number, 8, class_ave)
     plot_points(row_number, grades_weighted)
     check_final_grade(assignment)
