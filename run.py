@@ -89,7 +89,7 @@ def get_averages():
 
 
 def records_input():
-    num = check_int("Enter number to select a student: ")
+    num = check_int("\nEnter number to select a student: ")
     while num > (len(df2["Students"])):
         num = int(input("Choose a number: \n"))
     return num 
@@ -127,8 +127,8 @@ def find_percent(num1, num2):
     """
     Calculates student score as a percent
     """
-    result = (num1/num2)*100
-    return round(result)
+    result = int((num1/num2)*100)
+    return round(result, 2)
 
 
 def end_program():
@@ -142,7 +142,6 @@ def end_program():
         print("Thank you for using Grade Center.\n")
     if answer in ("no", "n"):
         main()
-
 
 
 def get_num1():
@@ -224,7 +223,7 @@ def calc_points_needed():
 
 
 def check_final_grade(assignment):
-    columns = [3, 4, 5, 6, 7, 8]
+    columns = [3, 4, 5, 6, 7]
     letter_grade = ""
     if assignment == "Final":
         for col in columns:
@@ -293,7 +292,7 @@ def get_grades():
         result = find_percent(num2, num1)
         grade_to_points = weighted_points(assignment, result)
         print(f"{num2}/{num1} is {result}%")
-        print(f"This assignment contributes {grade_to_points} towards the final grade.")
+        print(f"This grade contributes {grade_to_points} points of 100 towards the term grade.")
         grades.append(result)
         grades_weighted.append(grade_to_points)
     print("Updating spreadsheet and calculating class average, please wait...")
@@ -305,7 +304,7 @@ def get_grades():
     print(f"The class average for {assignment} was {class_ave}%\n")
     print("Calcuating points from waited grades.")
     print("Calcuating advising grades.")
-    print("Please wait for options.")
+    print("Please wait for Options Menu.")
     wks_raw_data.update_cell(row_number, 8, class_ave)
     plot_points(row_number, grades_weighted)
     check_final_grade(assignment)
