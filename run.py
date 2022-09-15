@@ -21,6 +21,7 @@ wks_class_list = SHEET.worksheet("class_list")
 df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
 df3 = pd.DataFrame(wks_adjusted.get_all_records())
+df4 = pd.DataFrame(wks_advising.get_all_records())
 
 
 def check_answer(answer):
@@ -82,14 +83,18 @@ def get_student_records():
     print("Here is your classlist:\n\n")
     student_num = (df2[["Number", "Students"]].to_string(index=False))
     print(student_num)
-    user_choice = int(input("Choose a number: \n"))
+    user_choice = int(input("\nChoose a number: \n"))
     while user_choice > (len(df2["Students"])):
         user_choice = int(input("Choose a number: \n"))
     student = (df2["Students"][user_choice-1])
     print("Results:\n")
     result = df[["Assignment", student]].to_string(index=False)
     print(result)
-    answer = input("Do you wish to view another student's records?")
+    print("\nAdvising results")
+    print("Average needed on remaining assignments for letter grade.\n")
+    advising_result = df4[["Grade", student]].to_string(index=False)
+    print(advising_result)
+    answer = input("\nDo you wish to view another student's records?\n")
     answer = check_answer(answer)
     if answer in ("yes", "y"):
         get_student_records()
