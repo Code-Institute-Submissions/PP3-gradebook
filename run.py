@@ -35,7 +35,7 @@ def check_int(num):
             num = int(input(num))
             return num
         except ValueError:
-            print("Please enter a valid integer.")
+            print("Please enter a valid integer.\n")
 
 
 def check_answer(answer):
@@ -89,10 +89,10 @@ def get_averages():
 
 
 def records_input():
-    num = check_int("\nEnter number to select a student: ")
+    num = check_int("\nEnter number to select a student: \n")
     while num > (len(df2["Students"])):
         num = int(input("Choose a number: \n"))
-    return num 
+    return num
 
 
 def get_student_records():
@@ -103,10 +103,10 @@ def get_student_records():
     df = pd.DataFrame(wks_raw_data.get_all_records())
     df2 = pd.DataFrame(wks_class_list.get_all_records())
     df4 = pd.DataFrame(wks_advising.get_all_records())
-    print("Here is your classlist:\n\n")
+    print("Here is your classlist:\n")
     student_num = (df2[["Number", "Students"]].to_string(index=False))
     print(student_num)
-    user_choice = records_input()   
+    user_choice = records_input()
     student = (df2["Students"][user_choice-1])
     print("Results:\n")
     result = df[["Assignment", student]].to_string(index=False)
@@ -157,7 +157,7 @@ def get_num1():
         points_possible = "Please enter the highest possible score?\n"
         num1 = check_int(points_possible)
         print(f"You entered {num1}. Is this correct?")
-        points_validation = input("Enter yes/y to continue or no/n to re-enter.\n")
+        points_validation = input("Respond with yes/y or no/n.\n")
         confirm_points = check_answer(points_validation)
         if confirm_points in ("no", "n"):
             confirm_points = ""
@@ -191,20 +191,20 @@ def calc_points_needed():
     # Get the points for the student - need to create values variable
     num = 3
     for student in student_list:
-        student_scores_earned = [item for item in wks_adjusted.col_values(num) if item][1:]
+        s_sco_earn = [item for item in wks_adjusted.col_values(num)if item][1:]
         # Convert list to floats
-        student_scores_earned = [float(item) for item in student_scores_earned]
+        s_sco_earn = [float(item) for item in s_sco_earn]
         # Get the list of weights and convert into floats
-        weights_list = [item for item in wks_adjusted.col_values(2) if item][1:]
-        weights_list = [float(item) for item in weights_list]
+        wts_list = [item for item in wks_adjusted.col_values(2) if item][1:]
+        wts_list = [float(item) for item in wts_list]
         # Get the sum of all the weights
-        # total_points_possible = sum(weights_list)
+        # total_points_possible = sum(wts_list)
         # Slice using the length of the student scores earned
-        length = len(student_scores_earned)
-        weights_used = weights_list[0:length]
-        weights_to_be_used = weights_list[length:]
+        length = len(s_sco_earn)
+        weights_used = wts_list[0:length]
+        weights_to_be_used = wts_list[length:]
         # Add calcuations
-        sum1_scores = sum(student_scores_earned)
+        sum1_scores = sum(s_sco_earn)
         sum2_weights = sum(weights_used)
         sum3_weights = sum(weights_to_be_used)
         current_average = int((sum1_scores/sum2_weights)*100)
@@ -212,11 +212,11 @@ def calc_points_needed():
         row = 2
         for key in letter_grades:
             col = num-1
-            ave_needed = int(((letter_grades[key] - sum1_scores)/sum3_weights)*100)
-            if ave_needed > 100:
+            ave_nd = int(((letter_grades[key] - sum1_scores)/sum3_weights)*100)
+            if ave_nd > 100:
                 message = "Not possible"
             else:
-                message = ave_needed
+                message = ave_nd
             list_averages.append(message)
             wks_advising.update_cell(row, col, message)
             row += 1
@@ -228,8 +228,8 @@ def check_final_grade(assignment):
     letter_grade = ""
     if assignment == "Final":
         for col in columns:
-            scores_list = [item for item in wks_adjusted.col_values(col) if item][1:]
-            scores = round(sum([float(item) for item in scores_list]))
+            sc_lt = [item for item in wks_adjusted.col_values(col) if item][1:]
+            scores = round(sum([float(item) for item in sc_lt]))
             wks_adjusted.update_cell(10, col, scores)
             if scores > 93:
                 letter_grade = "A"
@@ -279,7 +279,7 @@ def get_grades():
             student_points = "Enter score achieved for " + student + "\n"
             num2 = check_int(student_points)
             while num2 > num1:
-                student_points = f"""Re-enter student a score less than {num1}:\n"""
+                student_points = f"Enter a score less than {num1}:\n"
                 num2 = check_int(student_points)
             print(f"You entered {num2}. ")
             sscore_validation = input("Is this correct?\n")
@@ -293,10 +293,11 @@ def get_grades():
         result = find_percent(num2, num1)
         grade_to_points = weighted_points(assignment, result)
         print(f"{num2}/{num1} is {result}%")
-        print(f"This contributes {grade_to_points} points to the term grade.\n")
+        print(f"This adds {grade_to_points} points to the term grade.\n")
         grades.append(result)
         grades_weighted.append(grade_to_points)
-    print("Updating spreadsheet and calculating class average, please wait...\n")
+    print("Updating sheets and calculating class average")
+    print("Please wait...")
     grades_only = grades[2:]
     for index in range(len(grades)):
         grade = grades[index]
