@@ -1,7 +1,4 @@
 import statistics
-# import fuzzy_pandas
-# from fuzzywuzzy import fuzz
-# from fuzzywuzzy import process 
 import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
@@ -25,20 +22,32 @@ df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
 df3 = pd.DataFrame(wks_adjusted.get_all_records())
 
+
+def check_answer(answer):
+    """
+    Checks the user has entered a valid
+    yes/no response.
+    """
+    answer = answer.lower()
+    while answer not in ("yes", "y", "no", "n"):
+        answer = input("Please answer yes/y or no/n.\n")
+    return answer
+
+
 def plot_points(row_number, grades_weighted):
     """
     After grades are converted to points this
-    function places them in the 
+    function places them in the
     'grades_adjusted_and_final' worksheet.
     """
     for index in range(len(grades_weighted)):
         grade = grades_weighted[index]
-        wks_adjusted.update_cell(row_number, index + 3, grade)   
+        wks_adjusted.update_cell(row_number, index + 3, grade)
 
 
 def weighted_points(assignment, result):
     """
-    Convert the list of percentages into weighted points 
+    Convert the list of percentages into weighted points
     which will contribute to the final grade
     """
     weights = {
@@ -56,13 +65,14 @@ def get_averages():
     Gets and displays class averages for each
     assignment or exam
     """
-    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string(index = False)
+    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string(index=False)
     print(f"Class averages for previously entered grades:\n {summary}\n")
     main()
 
+
 def get_student_records():
     """
-    Allows the user to see results for 
+    Allows the user to see results for
     individual students
     """
     df = pd.DataFrame(wks_raw_data.get_all_records())
@@ -101,7 +111,7 @@ def end_program():
     answer = input("Would you like to exit?\n")
     answer = check_answer(answer)
     if answer in ("yes", "y"):
-        print(f"Thank you for using Grade Center.\n")
+        print("Thank you for using Grade Center.\n")
     if answer in ("no", "n"):
         main()
 
@@ -118,17 +128,6 @@ def check_int(num):
             return num
         except ValueError:
             print("Please enter a valid number.")
-
-
-def check_answer(answer):
-    """
-    Checks the user has entered a valid
-    yes/no response.
-    """
-    answer = answer.lower()
-    while answer not in ("yes", "y", "no", "n"):
-        answer = input("Please answer yes/y or no/n.\n")
-    return answer
 
 
 def get_num1():
@@ -158,10 +157,10 @@ def calc_points_needed():
     """
     While grades are incomplete, it tells the user
     what the student needs to achive an A, B, C or D.
-    When grades are complete, it gives a final term 
+    When grades are complete, it gives a final term
     grade and converts the result.
     """
-    #Create dictionary for grade values
+    # Create dictionary for grade values
     letter_grades = {
         "A": 94,
         "B": 83,
@@ -170,23 +169,23 @@ def calc_points_needed():
         "Pass": 60,
     }
 
-    #names = Get the list of student names to iterate through
+    # names = Get the list of student names to iterate through
     students = wks_advising.row_values(1)
     student_list = students[1:]
-    #print(student_list)
+    # print(student_list)
     num_students = len(student_list)
     print(f"This is the length of the student list: {num_students}")
-    #Get the points for the student - need to create values variable
+    # Get the points for the student - need to create values variable
     num = 3
     for student in student_list:
         student_scores_earned = [item for item in wks_adjusted.col_values(num) if item][1:]
-        #Convert list to floats
+        # Convert list to floats
         student_scores_earned = [float(item) for item in student_scores_earned]
-        #Get the list of weights and convert into floats
+        # Get the list of weights and convert into floats
         weights_list = [item for item in wks_adjusted.col_values(2) if item][1:]
         weights_list = [float(item) for item in weights_list]
-        #Get the sum of all the weights
-        total_points_possible = sum(weights_list)
+        # Get the sum of all the weights
+        # total_points_possible = sum(weights_list)
         # Slice using the length of the student scores earned
         length = len(student_scores_earned)
         weights_used = weights_list[0:length]
@@ -208,8 +207,21 @@ def calc_points_needed():
                 message = ave_needed
             list_averages.append(message)
             wks_advising.update_cell(row, col, message)
-            row+=1
+            row += 1
         num += 1
+
+
+def check_final_grade(assignment):
+    columns = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    if assignment == "Final":
+        for col in columns:
+            scores_list = [item for item in wks_adjusted.col_values(col) if item][1:]
+            scores = round(sum([float(item) for item in scores_list]))
+            wks_adjusted.update_cell(10, col, scores)
+        main()
+    else:
+        calc_points_needed()
+        main()
 
 
 def get_grades():
@@ -266,9 +278,7 @@ def get_grades():
     print(f"The class average for {assignment} was {class_ave}%\n")
     wks_raw_data.update_cell(row_number, 13, class_ave)
     plot_points(row_number, grades_weighted)
-    calc_points_needed()
-    
-    main()
+    check_final_grade(assignment)
 
 
 def check_if_due():
@@ -285,6 +295,7 @@ def check_if_due():
             break
         except ValueError:
             print("All grades have already been entered.")
+            main()
             break
 
 
@@ -298,7 +309,7 @@ def main():
     option4 = "4. Quit"
 
     print(f"""Please select from the following options:\n
-    {option1}\n 
+    {option1}\n
     {option2}\n
     {option3}\n
     {option4}\n""")
@@ -315,13 +326,8 @@ def main():
     else:
         print(f"{option} is not a valid response")
         end_program()
-    
 
 
 instructions = ("""Welcome to Grade Center.\n""")
 print(instructions)
 main()
-
-        
-
-
