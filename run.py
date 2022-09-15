@@ -154,7 +154,7 @@ def get_num1():
     """
     confirm_points = ""
     while confirm_points == "":
-        points_possible = "What as the total possible score?\n"
+        points_possible = "What was the total possible score?\n"
         num1 = check_int(points_possible)
         print(f"You entered {num1}. Is this correct?")
         points_validation = input("Respond with yes/y or no/n.\n")
