@@ -24,6 +24,20 @@ df3 = pd.DataFrame(wks_adjusted.get_all_records())
 df4 = pd.DataFrame(wks_advising.get_all_records())
 
 
+def check_int(num):
+    """
+    Checks user input is an integer.
+    If it isn't, it prompts the user
+    for a valid number.
+    """
+    while True:
+        try:
+            num = int(input(num))
+            return num
+        except ValueError:
+            print("Please enter a valid integer.")
+
+
 def check_answer(answer):
     """
     Checks the user has entered a valid
@@ -66,11 +80,18 @@ def get_averages():
     Gets and displays class averages for each
     assignment or exam
     """
+    df = pd.DataFrame(wks_raw_data.get_all_records())
     summary = df[["Date Entered",
                   "Assignment",
                   "Class Average"]].to_string(index=False)
     print(f"Class averages for previously entered grades:\n {summary}\n")
     main()
+
+def records_input():
+    num = check_int("Please choose student number.")
+    while num > (len(df2["Students"])):
+        num = int(input("Choose a number: \n"))
+    return num 
 
 
 def get_student_records():
@@ -80,12 +101,11 @@ def get_student_records():
     """
     df = pd.DataFrame(wks_raw_data.get_all_records())
     df2 = pd.DataFrame(wks_class_list.get_all_records())
+    df4 = pd.DataFrame(wks_advising.get_all_records())
     print("Here is your classlist:\n\n")
     student_num = (df2[["Number", "Students"]].to_string(index=False))
     print(student_num)
-    user_choice = int(input("\nChoose a number: \n"))
-    while user_choice > (len(df2["Students"])):
-        user_choice = int(input("Choose a number: \n"))
+    user_choice = records_input()   
     student = (df2["Students"][user_choice-1])
     print("Results:\n")
     result = df[["Assignment", student]].to_string(index=False)
@@ -122,19 +142,6 @@ def end_program():
     if answer in ("no", "n"):
         main()
 
-
-def check_int(num):
-    """
-    Checks user input is an integer.
-    If it isn't, it prompts the user
-    for a valid number.
-    """
-    while True:
-        try:
-            num = int(input(num))
-            return num
-        except ValueError:
-            print("Please enter a valid number.")
 
 
 def get_num1():
@@ -217,11 +224,26 @@ def calc_points_needed():
 
 def check_final_grade(assignment):
     columns = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    letter_grade = ""
     if assignment == "Final":
         for col in columns:
             scores_list = [item for item in wks_adjusted.col_values(col) if item][1:]
             scores = round(sum([float(item) for item in scores_list]))
             wks_adjusted.update_cell(10, col, scores)
+            if scores > 93:
+                letter_grade = "A"
+            elif scores > 82:
+                letter_grade = "B"
+            elif scores > 76:
+                letter_grade = "C"
+            elif scores > 66:
+                letter_grade = "D"
+            elif scores > 59:
+                letter_grade = "Pass"
+            else:
+                letter_grade = "Fail"
+            wks_adjusted.update_cell(11, col, letter_grade)
+            wks_raw_data.update_cell(10, col, letter_grade)
         main()
     else:
         calc_points_needed()
