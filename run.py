@@ -65,7 +65,9 @@ def get_averages():
     Gets and displays class averages for each
     assignment or exam
     """
-    summary = df[["Date Entered", "Assignment", "Class Average"]].to_string(index=False)
+    summary = df[["Date Entered",
+                  "Assignment",
+                  "Class Average"]].to_string(index=False)
     print(f"Class averages for previously entered grades:\n {summary}\n")
     main()
 
@@ -179,28 +181,38 @@ def calc_points_needed():
     num = 3
     for student in student_list:
         student_scores_earned = [item for item in wks_adjusted.col_values(num) if item][1:]
+        print(f"student scores earned: {student_scores_earned}")
         # Convert list to floats
         student_scores_earned = [float(item) for item in student_scores_earned]
+        print(f"scores earned as floats {student_scores_earned}")
         # Get the list of weights and convert into floats
         weights_list = [item for item in wks_adjusted.col_values(2) if item][1:]
         weights_list = [float(item) for item in weights_list]
+        print(f"Weights list/floated: {weights_list}")
         # Get the sum of all the weights
         # total_points_possible = sum(weights_list)
         # Slice using the length of the student scores earned
         length = len(student_scores_earned)
         weights_used = weights_list[0:length]
+        print(f"Weights applied: {weights_used}")
         weights_to_be_used = weights_list[length:]
+        print(f"Weights to be used: {weights_to_be_used}")
+        print(f"Weights applied: {weights_to_be_used}")
         # Add calcuations
         sum1_scores = sum(student_scores_earned)
         sum2_weights = sum(weights_used)
+        sum3_weights = sum(weights_to_be_used)
         current_average = int((sum1_scores/sum2_weights)*100)
         print(f"The current average is: {current_average}")
         list_averages = []
         row = 2
         for key in letter_grades:
+            print(f"key is {key}")
             col = num-1
+            print(f"This is the col #: {col}")
             print(f"This is the value of num: {num}")
-            ave_needed = int(((letter_grades[key] - sum1_scores)/sum(weights_to_be_used))*100)
+            print(f'Sum3 weights: {sum3_weights}')
+            ave_needed = int(((letter_grades[key] - sum1_scores)/sum3_weights)*100)
             if ave_needed > 100:
                 message = "Not possible"
             else:
