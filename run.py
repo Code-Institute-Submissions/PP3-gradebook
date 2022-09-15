@@ -293,7 +293,7 @@ def get_grades():
         result = find_percent(num2, num1)
         grade_to_points = weighted_points(assignment, result)
         print(f"{num2}/{num1} is {result}%")
-        print(f"This contributes {grade_to_points} to the term grade.\n")
+        print(f"This contributes {grade_to_points} points to the term grade.\n")
         grades.append(result)
         grades_weighted.append(grade_to_points)
     print("Updating spreadsheet and calculating class average, please wait...\n")
