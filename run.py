@@ -87,8 +87,9 @@ def get_averages():
     print(f"Class averages for previously entered grades:\n {summary}\n")
     main()
 
+
 def records_input():
-    num = check_int("Please choose student number.")
+    num = check_int("Enter number to select a student: ")
     while num > (len(df2["Students"])):
         num = int(input("Choose a number: \n"))
     return num 
@@ -223,7 +224,7 @@ def calc_points_needed():
 
 
 def check_final_grade(assignment):
-    columns = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    columns = [3, 4, 5, 6, 7, 8]
     letter_grade = ""
     if assignment == "Final":
         for col in columns:
@@ -278,7 +279,7 @@ def get_grades():
             student_points = "Enter score achieved for " + student + "\n"
             num2 = check_int(student_points)
             while num2 > num1:
-                student_points = """The student score must not exceed total possible score.Please re-enter student score:\n"""
+                student_points = f"""Re-enter student a score less than {num1}:\n"""
                 num2 = check_int(student_points)
             print(f"You entered {num2}. ")
             sscore_validation = input("Is this correct?\n")
@@ -302,7 +303,7 @@ def get_grades():
         wks_raw_data.update_cell(row_number, index + 1, grade)
     class_ave = int(statistics.mean(grades_only))
     print(f"The class average for {assignment} was {class_ave}%\n")
-    wks_raw_data.update_cell(row_number, 13, class_ave)
+    wks_raw_data.update_cell(row_number, 8, class_ave)
     plot_points(row_number, grades_weighted)
     check_final_grade(assignment)
 
@@ -349,9 +350,9 @@ def main():
         get_averages()
     elif option == 4:
         end_program()
-    else:
-        print(f"{option} is not a valid response")
-        end_program()
+    # else:
+    #     print(f"{option} is not a valid response")
+    #     end_program()
 
 
 instructions = ("""Welcome to Grade Center.\n""")
