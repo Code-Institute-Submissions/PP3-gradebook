@@ -89,7 +89,7 @@ def get_averages():
 
 
 def records_input():
-    num = check_int("\nEnter number to select a student: \n")
+    num = check_int("\nSelect student by roster number: \n")
     while num > (len(df2["Students"])):
         num = int(input("Choose a number: \n"))
     return num
@@ -112,7 +112,7 @@ def get_student_records():
     result = df[["Assignment", student]].to_string(index=False)
     print(result)
     print("\nAdvising results")
-    print("Average needed on remaining assignments for letter grade.\n")
+    print("Future averages needed for end of term grade.\n")
     advising_result = df4[["Grade", student]].to_string(index=False)
     print(advising_result)
     answer = input("\nDo you wish to view another student's records?\n")
@@ -154,7 +154,7 @@ def get_num1():
     """
     confirm_points = ""
     while confirm_points == "":
-        points_possible = "Please enter the highest possible score?\n"
+        points_possible = "Please enter the total possible score?\n"
         num1 = check_int(points_possible)
         print(f"You entered {num1}. Is this correct?")
         points_validation = input("Respond with yes/y or no/n.\n")
@@ -279,7 +279,7 @@ def get_grades():
             student_points = "Enter score achieved for " + student + "\n"
             num2 = check_int(student_points)
             while num2 > num1:
-                student_points = f"Enter a score less than {num1}:\n"
+                student_points = f"Enter a score up to {num1}:\n"
                 num2 = check_int(student_points)
             print(f"You entered {num2}. ")
             sscore_validation = input("Is this correct?\n")
@@ -307,6 +307,7 @@ def get_grades():
     print("Calcuating points from waited grades.\n")
     print("Calcuating advising grades.\n")
     print("Please wait for Options Menu.\n")
+    
     wks_raw_data.update_cell(row_number, 8, class_ave)
     plot_points(row_number, grades_weighted)
     check_final_grade(assignment)
