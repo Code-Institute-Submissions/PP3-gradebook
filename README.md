@@ -44,3 +44,56 @@ When a user selects option three they are shown a table with three columns:
 
 ### Option 4: Quit
 This allows the user to exit the program. When the user enters "4", they are asked if they want to exit, and if confirmed the receive the message, "Thank you for using Grade Center," a negative response brings them back to the Options menu.
+
+## User Experience
+The target audience for this app are faculty members or teachers working within small educational institutions that don't resources for a CRM.  
+
+As a user I want:
+- An easy to access app that is easy to understand. It should require no or very little training/instruction.
+- To be able to correct mistakes. 
+- To have scores weighted and calculated automatically
+- View student records.
+- View my class list and average results.
+- To be able to better advise students, and intervene before any student is at risk of failing or underachieving. 
+
+Examples of how the above is achieved is detailed in the features section below.
+
+## Features
+
+USER STORY
+I would like this app to be easy to understand, without any or much training.
+
+IMPLEMENTATION
+
+
+## Libraries and Technologies Used
+The following packages/libraries have been imported:
+- google-auth:This uses the creds.json file to set up the authentication needed to access the Google Cloud project. 
+    - google.oauth2.service_account: To allow the app to access Google Sheets, I followed the Love Sandwiches walk through to enable the Google Drive and Google Sheets APIs. This is described in the Deployment section below. 
+    
+- gspread: gspread is a Python API for Google Sheets, which we learned about in the Love Sandwiches walkthrough. In this app, I am using it to access my spreadsheet's data and to write data into it. 
+- PANDAS: This is a Python packgage that is using widely by data scientists. I've used it here to easily display back information to the user, and I found it useful for creating variables (for example the length of a row).
+
+## Deployment
+
+### Setting up the Google Spreadsheet and repository
+###Create a new project on Google Cloud Platform.
+- Enable the Google Drive and Google Sheets APIs, to allow data sharing. To do this, go to the the APIs & Service menu then to libraries where you can search for these APIs.
+- Generate credentials. Click the credentials button within the APIs and Services menu, and complete the fields. 
+- Once the above is complete, you click the "Add Credentials Button" to create a service account name, selecting JSON for the key type. - Once the above is completed, a file is downloaded with credentials. 
+### Set up GitHub repository and GitPod workspace, and link to Google
+- Set up repository for the project on Git Hub and create a GitPod workspace. 
+- Add the downloaded credentials file into the GitPod workspace and rename it creds.json.
+- Find the client email in the credentials. Go to the Google Sheet, share the spreadsheet with this email and give it full access to the spreadsheet.
+- Add the creds.json file to "gitignore" to prevent it from being commited or sent to GitHub. 
+### Install libraries and set global variables for access to the spreadshett
+- Install the libraries needed by entering "pip3 install + library_name" on the command line. e.g. "pip3 install google-auth".
+- Import the libraries into the run.py file. For example, for google-auth write "from google.oauth2.service_account import Credentials" at the top of the file. 
+- Set the scope by creating a global variable of the same name and listing the APIs the program has access to. 
+- Create the the following variables to link up with the service account, create the gspread client and access the project's spreadsheet. 
+
+        CREDS = Credentials.from_service_account_file('creds.json')
+        SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+        GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+        SHEET = GSPREAD_CLIENT.open('gradebook')
+
