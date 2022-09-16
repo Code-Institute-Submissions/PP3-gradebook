@@ -120,7 +120,7 @@ def get_student_records():
     user_choice = records_input()
     student = (df2["Students"][user_choice-1])
     print("Results:\n")
-    result = df[["Assignment", student]].to_string(index=False)
+    result = df[["Assignment", student, "Class Average"]].to_string(index=False)
     print(result)
     print("\nAdvising results")
     print("Future averages needed for end of term grade.\n")
@@ -288,7 +288,7 @@ def get_grades():
     grades = row_values
     print(f"Accepting grades for {assignment}\n")
     print("Instructions:")
-    print("Enter whole numbers only, with no symbols.")
+    print("Enter whole numbers only, with no symbols")
     # Get and validate the student score
     num1 = get_num1()
     for student in student_list[2:-1]:

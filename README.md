@@ -70,12 +70,12 @@ It is clear from this menu what information is available and what you can do at 
 
 ![Options Menu](assets/options_screen.JPG)
 
-When the user selects Option 1, the program tells them for which assignmet the user is entering grades and asks for input.
+When the user selects Option 1, the program tells them for which assignmet the user is entering grades and asks for input. The teacher is asked to make this input as an integrer. 
 
+It won't matter if those points have already been turned into a percent or if they want to enter the actual points the student scored based on a certain amount. For example, if an assignment or exam was worth 30 points, the teacher can enter that value and subsequently the scores earned by the student, such as 27, 28, 29. The figure will be converted into a percent. In the case the score has been calcuated by the teacher, then they can enter the total possible score as 100 and proceed to enter the numbers.
 
-![Option 1 Input](assets/option1_input.JPG)
+![Entering Grades](assets/enter_grades_inst.JPG)
 
-The teacher is asked to enter the total points. It won't matter if those points have already been turned into a percent or if they want to enter the actual points the student scored based on a certain amount. For example, if an assignment or exam was worth 30 points, the teacher can enter that value and then the scores earned by the student, such as 27, 28, 29. The figure will be converted into a percent. In the case the score has been calcuated by the teacher, then they can enter the total possible score as 100 and proceed to enter the numbers.
 
 ## Libraries and Technologies Used
 The following packages/libraries have been imported:
@@ -84,6 +84,20 @@ The following packages/libraries have been imported:
     
 - gspread: gspread is a Python API for Google Sheets, which we learned about in the Love Sandwiches walkthrough. In this app, I am using it to access my spreadsheet's data and to write data into it. 
 - PANDAS: This is a Python packgage that is using widely by data scientists. I've used it here to easily display back information to the user, and I found it useful for creating variables (for example the length of a row).
+
+USER STORY
+I would like to be able to correct a mistake
+
+IMPLEMENTATION
+Every time a user makes an input they have the opportunity to correct a mistake. For example, on our current screen, the user will make a number of mistakes:
+- Entry 1: Wrong number (1001). They are asked if this is correct.
+- Entry 2: The user responds with "n" (no) and they are asked what the total score was again.
+- Entry 3: They make a different kind of mistake this time with a slip of the fingers at the top of the keyboard, entering "10-). They are asked to enter a valid integer, and once again given the prompt, "What was the total possible score?
+- Entry 4: This time they enter "100", and they are asked to validate it. 
+- Entry 5: This time they presss the "enter key" by accident. They prompted again, "Please answer yes/y or no/n".
+- Entry 6: This time they hit the space bar and enter, with the same response as in 5.
+- Entry 7: The cat walks across the key board and ladfjlf is entered. Same response as above.
+- Entry 8: Finally, success! The user enters "y".
 
 ## Deployment
 
