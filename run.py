@@ -4,7 +4,7 @@ import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
 
-""" Link up to Google spreadsheet """
+""" List the APIs the program has access to """
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -277,8 +277,9 @@ def get_grades():
     # Get the first assignment for which grades need to be entered
     start_col = [item for item in wks_raw_data.col_values(1) if item]
     index = start_col.index("due")
+    date_col = index + 1
     assignment = wks_raw_data.cell(index + 1, 2).value
-    wks_raw_data.update_cell(index+1, 1, "=TODAY()")
+    # 1wks_raw_data.update_cell(date_col, 1, "=TODAY()")
     grades = []
     grades_weighted = []
     student_list = wks_raw_data.row_values(1)
@@ -321,6 +322,7 @@ def get_grades():
         grade = grades[index]
         wks_raw_data.update_cell(row_number, index + 1, grade)
     class_ave = int(statistics.mean(grades_only))
+    wks_raw_data.update_cell(row_number, 1, "=TODAY()")
     print(f"The class average for {assignment} was {class_ave}%\n")
     print("Calcuating points from weighted grades.\n")
     print("Calcuating advising grades.\n")

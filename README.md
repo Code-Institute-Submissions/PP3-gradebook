@@ -60,11 +60,22 @@ Examples of how the above is achieved is detailed in the features section below.
 
 ## Features
 
-USER STORY
+### User Story
 I would like this app to be easy to understand, without any or much training.
 
-IMPLEMENTATION
+Implementation
+- Options menu: when the app starts, the user has a simple options menu with choices to enter grades, view student records, view their class list with averages of previously entered grades or to leave the program. 
 
+It is clear from this menu what information is available and what you can do at each menu option. 
+
+![Options Menu](assets/options_screen.JPG)
+
+When the user selects Option 1, the program tells them for which assignmet the user is entering grades and asks for input.
+
+
+![Option 1 Input](assets/option1_input.JPG)
+
+The teacher is asked to enter the total points. It won't matter if those points have already been turned into a percent or if they want to enter the actual points the student scored based on a certain amount. For example, if an assignment or exam was worth 30 points, the teacher can enter that value and then the scores earned by the student, such as 27, 28, 29. The figure will be converted into a percent. In the case the score has been calcuated by the teacher, then they can enter the total possible score as 100 and proceed to enter the numbers.
 
 ## Libraries and Technologies Used
 The following packages/libraries have been imported:
