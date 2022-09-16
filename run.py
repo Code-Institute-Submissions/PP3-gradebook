@@ -356,7 +356,7 @@ def main():
     """
     option1 = "1. Enter grades"
     option2 = "2. View individual student results"
-    option3 = "3. View class averages"
+    option3 = "3. View class list & assignment averages"
     option4 = "4. Quit"
 
     print(f"""Please select from the following options:\n
