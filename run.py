@@ -4,6 +4,7 @@ import gspread
 import pandas as pd
 from google.oauth2.service_account import Credentials
 
+""" Link up to Google spreadsheet """
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -14,11 +15,13 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('gradebook')
 
+""" Variables for worksheets """
 wks_raw_data = SHEET.worksheet("grades_raw")
 wks_adjusted = SHEET.worksheet("grades_adjusted_and_final")
 wks_advising = SHEET.worksheet("final_result_needed")
 wks_class_list = SHEET.worksheet("class_list")
 
+""" Dataframe variables accessing sheets """
 df = pd.DataFrame(wks_raw_data.get_all_records())
 df2 = pd.DataFrame(wks_class_list.get_all_records())
 df3 = pd.DataFrame(wks_adjusted.get_all_records())
