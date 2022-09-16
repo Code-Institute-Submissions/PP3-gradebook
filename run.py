@@ -120,7 +120,8 @@ def get_student_records():
     user_choice = records_input()
     student = (df2["Students"][user_choice-1])
     print("Results:\n")
-    result = df[["Assignment", student, "Class Average"]].to_string(index=False)
+    result = df[
+             ["Assignment", student, "Class Average"]].to_string(index=False)
     print(result)
     print("\nAdvising results")
     print("Future averages needed for end of term grade.\n")
@@ -368,8 +369,10 @@ def main():
     {option2}\n
     {option3}\n
     {option4}\n""")
-    selection = "Choose by entering the number.\n"
+    selection = "Choose by entering the number of the option.\n"
     option = check_int(selection)
+    while option not in (1, 2, 3, 4):
+        option = check_int(selection)
     if option == 1:
         check_if_due()
     elif option == 2:
