@@ -322,7 +322,7 @@ def get_grades():
         wks_raw_data.update_cell(row_number, index + 1, grade)
     class_ave = int(statistics.mean(grades_only))
     print(f"The class average for {assignment} was {class_ave}%\n")
-    print("Calcuating points from waited grades.\n")
+    print("Calcuating points from weighted grades.\n")
     print("Calcuating advising grades.\n")
     print("Please wait for Options Menu.\n")
     # Plot points in spreadsheet
