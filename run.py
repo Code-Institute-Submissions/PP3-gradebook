@@ -287,7 +287,8 @@ def get_grades():
     row_values = wks_raw_data.row_values(row_number)
     grades = row_values
     print(f"Accepting grades for {assignment}\n")
-    print("How much was this assignment/exam worth?")
+    print("Instructions:")
+    print("Enter whole numbers only, with no symbols.")
     # Get and validate the student score
     num1 = get_num1()
     for student in student_list[2:-1]:
