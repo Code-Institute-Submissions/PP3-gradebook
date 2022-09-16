@@ -1,3 +1,4 @@
+""" Import libraries and packages """
 import statistics
 import gspread
 import pandas as pd
@@ -51,7 +52,7 @@ def check_answer(answer):
 
 def plot_points(row_number, grades_weighted):
     """
-    After grades are converted to points this
+    After grades are converted to points, this
     function places them in the
     'grades_adjusted_and_final' worksheet.
     """
@@ -62,8 +63,9 @@ def plot_points(row_number, grades_weighted):
 
 def weighted_points(assignment, result):
     """
-    Convert the list of percentages into weighted points
-    which will contribute to the final grade
+    Converts the list of percentages into
+    weighted points, which form
+    the final grade.
     """
     weights = {
         "Homework": 0.05,
@@ -77,7 +79,7 @@ def weighted_points(assignment, result):
 
 def get_averages():
     """
-    Gets and displays class averages for each
+    Retrieves and displays class averages for each
     assignment or exam
     """
     df = pd.DataFrame(wks_raw_data.get_all_records())
@@ -89,6 +91,12 @@ def get_averages():
 
 
 def records_input():
+    """
+    Gets and validates a number
+    from the student roster, to
+    enable the user to see an individual
+    student record.
+    """
     num = check_int("\nSelect student by roster number: \n")
     while num > (len(df2["Students"])):
         num = int(input("Choose a number: \n"))
@@ -98,7 +106,7 @@ def records_input():
 def get_student_records():
     """
     Allows the user to see results for
-    individual students
+    individual students.
     """
     df = pd.DataFrame(wks_raw_data.get_all_records())
     df2 = pd.DataFrame(wks_class_list.get_all_records())
@@ -125,7 +133,8 @@ def get_student_records():
 
 def find_percent(num1, num2):
     """
-    Calculates student score as a percent
+    Calculates a student's score
+    as a percent
     """
     result = int((num1/num2)*100)
     result = round(result, 2)
@@ -134,8 +143,8 @@ def find_percent(num1, num2):
 
 def end_program():
     """
-    Ends to program if teacher does
-    not want to enter more results.
+    Gives the user the option to
+    end the program.
     """
     answer = input("Would you like to exit?\n")
     answer = check_answer(answer)
@@ -170,10 +179,12 @@ def get_num1():
 
 def calc_points_needed():
     """
-    While grades are incomplete, it tells the user
-    what the student needs to achive an A, B, C or D.
-    When grades are complete, it gives a final term
-    grade and converts the result.
+    It tells the user what the student needs to
+    achive an A, B, C or D, before the final exam
+    is taken. Once the grades for the final exam
+    are entered, it calculates the final term
+    grade and converts the result into a letter
+    grade.
     """
     # Create dictionary for grade values
     letter_grades = {
@@ -184,35 +195,31 @@ def calc_points_needed():
         "Pass": 60,
     }
 
-    # names = Get the list of student names to iterate through
     students = wks_advising.row_values(1)
     student_list = students[1:]
-    num_students = len(student_list)
-    # Get the points for the student - need to create values variable
+    # The start column
     num = 3
     for student in student_list:
+        # s_sco_earned is shorthand for "student score earned"
         s_sco_earn = [item for item in wks_adjusted.col_values(num)if item][1:]
         # Convert list to floats
         s_sco_earn = [float(item) for item in s_sco_earn]
         # Get the list of weights and convert into floats
         wts_list = [item for item in wks_adjusted.col_values(2) if item][1:]
         wts_list = [float(item) for item in wts_list]
-        # Get the sum of all the weights
-        # total_points_possible = sum(wts_list)
         # Slice using the length of the student scores earned
         length = len(s_sco_earn)
         weights_used = wts_list[0:length]
         weights_to_be_used = wts_list[length:]
-        # Add calcuations
+        # Get the sums of student scores and weights
         sum1_scores = sum(s_sco_earn)
-        sum2_weights = sum(weights_used)
-        sum3_weights = sum(weights_to_be_used)
-        current_average = int((sum1_scores/sum2_weights)*100)
+        sum2_weights = sum(weights_to_be_used)
+        # Determine average needed to attain each grade
         list_averages = []
         row = 2
         for key in letter_grades:
             col = num-1
-            ave_nd = int(((letter_grades[key] - sum1_scores)/sum3_weights)*100)
+            ave_nd = int(((letter_grades[key] - sum1_scores)/sum2_weights)*100)
             if ave_nd > 100:
                 message = "Not possible"
             else:
@@ -224,6 +231,13 @@ def calc_points_needed():
 
 
 def check_final_grade(assignment):
+    """
+    Checks if the final exam grades have
+    been entered. If true it calcuates the final term
+    grade, plots the result, then assigns it a letter
+    grade and plots it. If false, it calls the
+    calc_points_needed function.
+    """
     columns = [3, 4, 5, 6, 7]
     letter_grade = ""
     if assignment == "Final":
@@ -262,9 +276,6 @@ def get_grades():
     index = start_col.index("due")
     assignment = wks_raw_data.cell(index + 1, 2).value
     wks_raw_data.update_cell(index+1, 1, "=TODAY()")
-
-    # Get grades from user. User enters total points and
-    # a percentage is calculated.
     grades = []
     grades_weighted = []
     student_list = wks_raw_data.row_values(1)
@@ -272,6 +283,7 @@ def get_grades():
     row_values = wks_raw_data.row_values(row_number)
     grades = row_values
     print(f"Accepting grades for {assignment}\n")
+    # Get and validate the student score
     num1 = get_num1()
     for student in student_list[2:-1]:
         confirm = ""
@@ -290,7 +302,9 @@ def get_grades():
                 confirm = sscore_validation
             else:
                 confirm = ""
+        # Find the percent for grades_raw sheet
         result = find_percent(num2, num1)
+        # Weight the result for grades_adjusted sheet
         grade_to_points = weighted_points(assignment, result)
         print(f"{num2}/{num1} is {result}%")
         print(f"This adds {grade_to_points} points to the term grade.\n")
@@ -298,6 +312,7 @@ def get_grades():
         grades_weighted.append(grade_to_points)
     print("Updating sheets and calculating class average")
     print("Please wait...")
+    # Plot grades in spreadsheet
     grades_only = grades[2:]
     for index in range(len(grades)):
         grade = grades[index]
@@ -307,9 +322,10 @@ def get_grades():
     print("Calcuating points from waited grades.\n")
     print("Calcuating advising grades.\n")
     print("Please wait for Options Menu.\n")
-
+    # Plot points in spreadsheet
     wks_raw_data.update_cell(row_number, 8, class_ave)
     plot_points(row_number, grades_weighted)
+    # Check if final grades or advsing calculations needed
     check_final_grade(assignment)
 
 
@@ -322,7 +338,7 @@ def check_if_due():
     start_col = [item for item in wks_raw_data.col_values(1) if item]
     while True:
         try:
-            index = start_col.index("due")
+            start_col.index("due")
             get_grades()
             break
         except ValueError:
@@ -355,9 +371,6 @@ def main():
         get_averages()
     elif option == 4:
         end_program()
-    # else:
-    #     print(f"{option} is not a valid response")
-    #     end_program()
 
 
 instructions = ("""Welcome to Grade Center.\n""")
