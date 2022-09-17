@@ -307,6 +307,7 @@ def get_grades():
                 confirm = ""
             elif confirm in ("yes", "y"):
                 confirm = sscore_validation
+                break
             else:
                 confirm = ""
         # Find the percent for grades_raw sheet

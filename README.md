@@ -259,6 +259,9 @@ Working with the Google Sheets offered up a lot of problems I wouldn't have anti
 
 #### Solved
     - Stray data on the Google sheet broke the program by putting it "out of bounds" any time field data was captured dynamically. I didn't understand this at first and spent many hours trying to fix things that weren't actually broken.
+    - I missed two places where a user could enter an out of range number which broke the program. 
+        - The first was in the options menu. While the input was checked for being an integer, it didn't exclude the possibiliy of the user choosing a number outside of the range of 1-4. 
+        - The second was in the get_student_input function. I check it wasn't greater than the number of students, but didn't think at the time to check for numbers less than 1.
     - Problems with the logic of yes/no exception in the check_answer(answer function)
     - I needed to fix the check_int() function to prevent it from crashing if a space was entered.
     - I got a lot of errors related to not converting strings into integers.
