@@ -13,6 +13,22 @@ For this program to work the following Google sheets need to be set up:
 
 I believe it would be possible to create low cost tools for such educational programs that could perform such simple tasks. For example, most institutions I've worked with use Google. I have been able to create an attendance system using Google Apps Scripts. I think that Python offers a great deal more, and I would be excited to further develop this project into something fit for use for my employer. 
 
+## The calculations
+ ### Percent
+ - Users are asked to enter the total points value for an assignment. This num1. Then for each student they enter the points each student achived. Let's say a homework assignment was worth 20 points, and a student earned 15 points (num2). It's a simple calcuation of (num2/num1)*100 or (15/20)*100 = 75.
+ - Each assignment is given a weight. Each homework assignment in the app is worth 5% of the total grade. In the above case 75 * 0.05 = 3.75. So that's 3.75 of 5 possible points. 
+ - The percentages students need to keep to achieve an A, B, C, etc work like this.
+    - If you look at Bowie's column, you'll see his points add up to 54.65. Looking at the points possible for each assignment, you can see that he has earned 54.65 points out of 60 possible points so far.
+    - He needs at least 94 points to get an A. The final exam is worth 40 points. 
+    - To get an A he needs at least 94 percentage points 
+        - 54.65 = 39.35
+        - Bowie needs 39.35 percentage points for an A.
+        - That means he needs a 98% average (39.65/40 * 100)
+
+![points table](assets/grades-explained.JPG)
+
+![calculations](assets/score-needed.JPG)
+
 ## How to use Grade Center
 Grade Center initiates by offer users a set of options, for which they are prompted to enter the corresponding number. 
 1. Enter grades
@@ -216,10 +232,11 @@ This quick access to student information would be extremely useful to adminstrat
 
 
 ## Future Development
+- I would like the user to be able to go in, select and assignment and replace the grades.
+- I would like there to be an option of leaving a grade blank. The app should then perform all the calculations taking into account existing entries.
 - At present, one can enter a ridiculous number as the total score possible. I would like to get the user to confirm numbers over 100.
-- I would like the admin to be able to import course numbers and then the spreadsheets would populate with the student names. 
-- I would like the user to enter their own assignments, and enter the weights value for each. 
-
+- I would like the app administrator to be able to easily set up the app by importing or entering course numbers that could, for example, be in other Google Sheet. From there the spreadsheets would populate with the student names. 
+- I would like the user to be able enter their  assignments, and enter the weights value for each. The current model assumes this will be done on the spreadsheet. 
 
 
 ## Data Model Design
@@ -247,7 +264,11 @@ The chart below shows the flow of option 1, in which the user enters grades. The
 
 I tested this project throughout it's development and made sure things worked before moving on to the next part of the flow chart. At the end of the project, I gave it a methodical check. By going through the program and inputting invalid responses. This testing can be viewed in this [Spreadsheet](https://docs.google.com/spreadsheets/d/1-awNb3E3dOYhpWWYCU1M3x4QjXDdBIR8rZImkCoN8xU/edit?usp=sharing)
 
-DETAIL ERRORS ONCE FIXED. 
+I found and fixed 3 errors that are included in the section called bugs. I retested the places where these errors were muliple times. Two errors related to a user entering a number outside of a required range. The third was due to the lack of a "break" in a loop resulting in the user being asked a question again in spite of confirming with "yes". Here are the results of the testing:
+
+![Testing, p1](assets/Testing1.JPG)
+![Tesing, p2](assets/Testing2.JPG)
+![Testing, p3](assets/Testing3.JPG)
 
 ### Validator Testing
 The code for this project was tested in the [PEP8 online](http://pep8online.com/checkresult). I did this through the project to get ahead of potential problems. My errors largely related to line length and trailing spaces. 
@@ -270,19 +291,22 @@ Working with the Google Sheets offered up a lot of problems I wouldn't have anti
     - I didn't realize that the dataframes wouldn't always give me up-to-date data from the spreadsheet, in the same way I can call up with information from the worksheets. I had to set new variables in the functions that display student records and the class average page so that it would show new data that was entered. 
     - When I reduced my students, I forgot to adapt lists where that relied on them to be a certain number and I also forgot to remove the names on sheet one of the spreadsheet. 
     - The averages were coming out with a large number of decimal places so I had to use use round().
+    - I left out a "break" in a loop which resulted in a question being asked again, following multiple bogus/invalid enters, although the user had answered "yes" to confirm their response. 
 
 
 #### Unsolved
     - Write per minute quota errors:  when I test the program quickly and repeatedly, I get an error telling me I have exceeded the quota. It gives a website where you can request a higher quota. It at once told me that I hadn't met the quota and that I couldn't request more. I have possibly misunderstood this, but it is a great concern to me when this project is assessed. I am worried it will break when the assessors are testing. I cut my student list from 10 to 5 hoping that this would solve the problem but it didn't. 
     - I wanted it to be possible for the loop at lines ADD THEM HERE to be written so that the data would overwrite any existing data. This is relevant to future implementations. At present, the data needs to be manually deleted or new entries will be written out of range. 
     - There are a couple of places where I could not get a range dynanmically. I was able to do it in other places, but did not succeed everywhere. I ended up putting in a row or column number to solve the problem, which isn't ideal and I'd like to fix this in future. 
-    - I couldn't seem to get any date time functions to work, so I solved this by writing in the relevant formula I'd usually use for Sheets. I considered this unsolved. I had intended to go back and fix this, but ran out of time.
+    - I couldn't seem to get any datetime functions to work, so I solved this by writing in the relevant formula I'd usually use for Sheets. I considered this unsolved. I had intended to go back and fix this, but ran out of time.
 
 #### Other issues
-I had installed a number of packages I didn't end up using. I ran pip3 freeze > requirements.txt on the command line again to update the requirements file, but I can't see any changes. 
+- I had installed a number of packages I didn't end up using and subsequently uninstalled. I ran pip3 freeze > requirements.txt on the command line again to update the requirements file, but I can't see any changes. 
+- Heroku seems to at times freeze up.
 
 #### Potential problem for assessment
-- There is not a way to clear the data from the spread automatically. There are only 9 rows to work with. It should be enough to test the app, but once all grades are entered, no more grades will be accepted. 
+- There is not a way to clear the data from the spread automatically. There are only 9 rows to work with. It should be enough to test the app, but once all grades are entered, no more grades will be accepted, which will make further testing impossible without access to the spreadsheet. I am reluctant to give access to the Spreadsheet due to the number of problem I had with data being unintentional entered onto the sheet. Also, any dates in the "Date Entered" column need with be replaced with "Due Date" with no spaces after date. All the fields need to be exact.
+
 
 
 ## Libraries and Technologies Used
@@ -297,7 +321,7 @@ The following packages/libraries have been imported:
 - I used [Lucid Charts](https://www.lucidchart.com/) to create the flowsheet.
 
 
-## Pre-deployment- Setting up the Google Spreadsheet and repository
+## Setting up the environment
 
 There was a lot to do to get this project set up prior to deployement. 
 
