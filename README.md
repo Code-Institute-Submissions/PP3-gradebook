@@ -182,11 +182,11 @@ Below, you can see that user has selected "2" from the Options Menu to "View cla
 
 ![John Lennon](assets/John-Lennon.JPG)
 
-This information is displayed easily via PANDAS dataframes. 
+This information is displayed easily via pandas dataframes. 
 
 USER BENEFITS
 
-Using PANDAs dataframes makes it a snap to display spreadsheet information, so it would be easy and quick to make changes to what's displayed to the user following feedback. 
+Using pandas dataframes makes it a snap to display spreadsheet information, so it would be easy and quick to make changes to what's displayed to the user following feedback. 
 
 The user can at a glance see 
 - all of John Lennon's grades, 
@@ -204,7 +204,7 @@ Faculty juggle a lot of classes and it's hard to keep track of new names with th
 
 IMPLEMENTATION
 
-This display has been achieved in the app by using PANDAS dataframes.
+This display has been achieved in the app by using pandas dataframes.
 
 ![Class Averages](assets/class-ave.JPG)
 
@@ -217,6 +217,9 @@ This quick access to student information would be extremely useful to adminstrat
 
 ## Future Development
 - At present, one can enter a ridiculous number as the total score possible. I would like to get the user to confirm numbers over 100.
+- I would like the admin to be able to import course numbers and then the spreadsheets would populate with the student names. 
+- I would like the user to enter their own assignments, and enter the weights value for each. 
+
 
 
 ## Data Model Design
@@ -270,6 +273,11 @@ Working with the Google Sheets offered up a lot of problems I wouldn't have anti
     - Write per minute quota errors:  when I test the program quickly and repeatedly, I get an error telling me I have exceeded the quota. It gives a website where you can request a higher quota. It at once told me that I hadn't met the quota and that I couldn't request more. I have possibly misunderstood this, but it is a great concern to me when this project is assessed. I am worried it will break when the assessors are testing. I cut my student list from 10 to 5 hoping that this would solve the problem but it didn't. 
     - I wanted it to be possible for the loop at lines ADD THEM HERE to be written so that the data would overwrite any existing data. This is relevant to future implementations. At present, the data needs to be manually deleted or new entries will be written out of range. 
     - There are a couple of places where I could not get a range dynanmically. I was able to do it in other places, but did not succeed everywhere. I ended up putting in a row or column number to solve the problem, which isn't ideal and I'd like to fix this in future. 
+    - I couldn't seem to get any date time functions to work, so I solved this by writing in the relevant formula I'd usually use for Sheets. I considered this unsolved. I had intended to go back and fix this, but ran out of time.
+
+#### Other issues
+I had installed a number of packages I didn't end up using. I ran pip3 freeze > requirements.txt on the command line again to update the requirements file, but I can't see any changes. 
+
 #### Potential problem for assessment
 - There is not a way to clear the data from the spread automatically. There are only 9 rows to work with. It should be enough to test the app, but once all grades are entered, no more grades will be accepted. 
 
@@ -281,7 +289,7 @@ The following packages/libraries have been imported:
     - google.oauth2.service_account: To allow the app to access Google Sheets, I followed the Love Sandwiches walk through to enable the Google Drive and Google Sheets APIs. This is described in the Deployment section below. 
     
 - gspread: gspread is a Python API for Google Sheets, which we learned about in the Love Sandwiches walkthrough. In this app, I am using it to access my spreadsheet's data and to write data into it. 
-- PANDAS: This is a Python packgage that is using widely by data scientists. I've used it here to easily display back information to the user, and I found it useful for creating variables (for example the length of a row).
+- Pandas: This is a Python packgage that is using widely by data scientists. I've used it here to easily display back information to the user, and I found it useful for creating variables (for example the length of a row).
 - The Python Statistics module - I used this specifically for the mean function. I tried to import the mean function only from the module but this didn't work. 
 - I used [Lucid Charts](https://www.lucidchart.com/) to create the flowsheet.
 
@@ -299,7 +307,7 @@ There was a lot to do to get this project set up prior to deployement.
 - Add the downloaded credentials file into the GitPod workspace and rename it creds.json.
 - Find the client email in the credentials. Go to the Google Sheet, share the spreadsheet with this email and give it full access to the spreadsheet.
 - Add the creds.json file to "gitignore" to prevent it from being commited or sent to GitHub. 
-### Install libraries and set global variables for access to the spreadshett
+### Install libraries and set global variables for access to the spreadsheet
 - Install the libraries needed by entering "pip3 install + library_name" on the command line. e.g. "pip3 install google-auth".
 - Import the libraries into the run.py file. For example, for google-auth write "from google.oauth2.service_account import Credentials" at the top of the file. 
 - Set the scope by creating a global variable of the same name and listing the APIs the program has access to. 
@@ -331,6 +339,14 @@ To deploy this project, I relied on the Love Sandwiches walkthrough, which allow
 
 ## Credits
 As ever I would like to thank my mentor Daisy McGirr for her amazing support.
-
+- Code Institute's Python Essentials module
+- [Gspread documentation](https://docs.gspread.org/en/latest/)
+- [Pandas documentation](https://pandas.pydata.org/docs/)
+- [W3 Schools](https://www.w3schools.com/) for quick reference
+- This video, [Complete Python Pandas Data Science Tutorial!](https://www.youtube.com/watch?v=vmEHCJofslg&t=690s), but Keith Galli was incredibly helpful for coming to grips with Pandas.
+- I refered to the [Python-course.eu](https://python-course.eu/python-tutorial/errors-and-exception-handling.php) website related to expception handing. 
+- I had a look at this [Grade Calculator](https://www.rapidtables.com/calc/grade/grade-calculator.html) by Rapid Tables to check my calculations.
+- [Python Style Guide](https://peps.python.org/pep-0008/)
+-[15 Python tips and tricks, so you don’t have to look them up on Stack Overflow](https://medium.com/@george.seif94/15-python-tips-and-tricks-so-you-dont-have-to-look-them-up-on-stack-overflow-90cec02705ae) - I found this a useful for iterating over a dictionary.
 
 

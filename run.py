@@ -101,8 +101,8 @@ def records_input():
     student record.
     """
     num = check_int("\nSelect student by roster number: \n")
-    while num > (len(df2["Students"])):
-        num = int(input("Choose a number: \n"))
+    while num not in range(1, 6):
+        num = check_int("Choose the number next to the name: \n")
     return num
 
 
